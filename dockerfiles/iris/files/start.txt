@@ -1,0 +1,117 @@
+To build:
+
+docker build -t mgdbx-iris .
+
+=========
+
+To run:
+
+docker run --name mgdbx-iris -it --rm -p 1972:1972 -p 52773:52773 -p 51773:51773 -p 7042:7042 -p 8080:8080 -v ~/iris-vol:/home/irisowner/mapped mgdbx-iris --check-caps false
+
+
+Substitute ~/iris-vol with the path of the folder you want to map
+
+
+======
+
+Shell and Login as root:
+
+docker exec --user="root" -it mgdbx-iris bash
+
+======
+
+
+Shell and login as normal user
+
+docker exec -it mgdbx-iris bash
+
+  and then to start IRIS shell:
+
+iris terminal IRIS
+
+  or to use Node.js:
+
+node {filename}
+
+  or to use Bun.js:
+
+bun {filename}
+
+
+
+----
+
+
+Accessing the IRIS server from a Node system (myScript.mjs):
+
+
+- Network access:
+
+import {server, mglobal, mclass} from 'mg-dbx-napi/node';
+
+let db = new server();
+
+let open = db.open({
+  type: "IRIS",
+  host: "127.0.01",
+  tcp_port: 7042,
+  username: "_SYSTEM",
+  password: "SYS",
+  namespace: "USER"
+});
+
+console.log(db.version());
+
+let rob = new mglobal(db, "rob");
+
+rob.set(Date.now(),"hello world 123");
+
+console.log(rob.get(123));
+
+db.close();
+
+
+
+
+- API access:  mgr directory is /usr/irissys/mgr
+
+replace db.open() with:
+
+
+db.open({
+  type: "IRIS",
+  path:"/usr/irissys/mgr",
+  username: "_SYSTEM",
+  password: "secret",
+  namespace: "USER"
+});
+
+
+Otherwise everything is the same.
+
+-------
+
+
+
+curl -v http://localhost:8080/local
+curl -v http://localhost:8080/helloworld
+curl -v http://localhost:8080/addUser/Rob
+
+
+--- 
+
+Installing Apache Benchmark
+
+
+docker exec --user="root" -it iris bash
+apt install -y apache2-utils
+
+
+ab -n 10 -c 1 -v 4 http://localhost:3000/local
+
+
+ab -n 50000 -c 8 http://localhost:3000/local
+
+
+
+

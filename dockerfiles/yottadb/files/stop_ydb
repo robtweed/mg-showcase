@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+export ydb_gbldir=/opt/mgateway/mapped/ydb_data/yottadb.gld
+
+processes=$(pgrep mumps)
+if [ ! -z "${processes}" ] ; then
+  # echo "Stopping any remaining M processes nicely"
+  for i in ${processes}
+    do
+      /usr/local/lib/yottadb/r138/mupip stop ${i}
+    done
+
+  # Wait for process to react to mupip stop instead of force kill later
+  sleep 5
+fi
+
+# Look for M processes that are still running
+processes=$(pgrep mumps)
+if [ ! -z "${processes}" ] ; then
+  pkill -9 mumps
+fi
+
+# Rundown the mumps database
+
+/usr/local/lib/yottadb/r138/mupip rundown -region default

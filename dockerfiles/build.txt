@@ -1,0 +1,56 @@
+Before building, first ensure you're in the parent directory:
+
+cd /glsdb-showcase/dockerfiles
+
+
+IRIS
+----
+
+IRIS: Intel x64 Linux:
+----------------
+
+docker build -t glsdb -f iris/x64/Dockerfile .
+
+
+IRIS: Intel ARM64 Linux:
+----------------
+
+docker build -t glsdb -f iris/arm64/Dockerfile .
+
+
+To Run any IRIS build:
+----------------------
+
+docker run --name glsdb -it --rm -p 1972:1972 -p 52773:52773 -p 51773:51773 -p 7042:7042 -p 8080:8080 -v ~/iris-vol:/home/irisowner/mapped glsdb --check-caps false
+
+
+Substitute ~/iris-vol with the mapped folder of your choice
+
+To run with database persistence, consult the IRIS Docker documentation.
+
+
+===================
+
+
+YottaDB: Any Supported Linux Platform (x64 or ARM64):
+-----------------------------------------------------
+
+docker build -t glsdb -f yottadb/Dockerfile .
+
+
+Running:
+
+docker run -it --name glsdb --rm -p 8080:8080 -v ~/yottadb-vol:/opt/mgateway/mapped glsdb
+
+
+Substitute ~/yottadb-vol with the mapped folder of your choice
+
+First time you run the container, the YottaDB database files will be copied to the mapped volume
+for persistence on the host file system
+
+
+
+
+
+
+

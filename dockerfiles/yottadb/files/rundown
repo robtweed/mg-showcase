@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+export ydb_gbldir=/opt/mgateway/mapped/ydb_data/yottadb.gld
+/usr/local/lib/yottadb/r138/mupip rundown -region default
+

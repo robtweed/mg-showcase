@@ -1,0 +1,15 @@
+Start the container, mapping this folder to the container's /opt/mgateway/mapped folder:
+
+
+  docker run -it --name glsdb --rm -p 8080:8080 -v ~/glsdb-vol:/opt/mgateway/mapped glsdb
+
+If you want to use a different port on your host system, change the -p argument to, eg 3000 on the host:
+
+   -p 3000:8080
+
+
+==========
+
+Start with local persistence within container only:
+
+  docker run -it --name glsdb --rm -p 8080:8080 glsdb

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+export ydb_gbldir=/opt/mgateway/mapped/ydb_data/yottadb.gld
+
+processes=$(pgrep mumps)
+if [ ! -z "${processes}" ] ; then
+  for i in ${processes}
+    do
+      /usr/local/lib/yottadb/r138/mupip stop ${i}
+    done
+fi
+

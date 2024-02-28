@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+if [ -d "/opt/mgateway/mapped" ]; then
+
+  if [ ! -d "/opt/mgateway/mapped/ydb_data" ]; then
+
+    mkdir /opt/mgateway/mapped/ydb_data
+    cp /opt/yottadb/* /opt/mgateway/mapped/ydb_data
+    echo "YottaDB Global Directory files copied to mapped folder"
+
+  fi
+
+  # set symbolic links to use ydb_data directory for YottaDB storage
+
+  rm /opt/yottadb/mumps.dat
+  rm /opt/yottadb/yottadb.gld
+  ln -s /opt/mgateway/mapped/ydb_data/mumps.dat /opt/yottadb/mumps.dat
+  ln -s /opt/mgateway/mapped/ydb_data/yottadb.gld /opt/yottadb/yottadb.gld
+
+  export ydb_gbldir=/opt/yottadb/yottadb.gld
+  /usr/local/lib/yottadb/r138/mupip rundown -region default
+  /usr/local/lib/yottadb/r138/mupip set -key_size=1019 -region default
+  /usr/local/lib/yottadb/r138/mupip set -record_size=1048576 -region default
+
+  echo "Note: Data saved in YottaDB will persist in your mapped folder"
+
+else
+
+  echo "NOTE: You have not started with the mapped directory"
+  echo "Data saved in YottaDB will not persist when you stop"
+  echo "the Container"
+
+
+fi
+
