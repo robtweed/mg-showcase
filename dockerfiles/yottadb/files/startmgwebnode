@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+node /opt/mgateway/mg_web/experimental/mg_web_node.mjs 7777

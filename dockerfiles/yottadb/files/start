@@ -33,3 +33,6 @@ else
 
 fi
 
+./nginx start
+
+

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "status" ]; then
+
+  if [ -f ./nginx.pid ]; then
+     echo "Nginx is running"
+   else
+     echo "Nginx is not running"
+  fi
+
+fi
+
+if [ "$1" == "start" ]; then
+  /usr/sbin/nginx
+  echo "Nginx has been started"
+fi
+
+if [ "$1" == "stop" ]; then
+  /usr/sbin/nginx -s quit
+  echo "Nginx has been stopped"
+fi
+
+if [ "$1" == "reload" ]; then
+  /usr/sbin/nginx -s reload
+  echo "Nginx has been reloaded"
+fi
+
+if [ "$1" == "workers" ] && [ "$2" > 0 ]; then
+  sed -i "s/.*worker_processes.*/worker_processes $2;/g" /etc/nginx/nginx.conf
+  /usr/sbin/nginx -s reload
+  echo "Nginx has been reloaded with $2 workers"
+fi

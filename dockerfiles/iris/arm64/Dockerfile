@@ -1,5 +1,5 @@
 # MGateway Ltd
-# 26 February 2024
+# 6 March 2024
 
 FROM containers.intersystems.com/intersystems/iris-community:2023.3-linux-arm64
 
@@ -15,19 +15,91 @@ RUN apt update && apt install -y \
   locate \
   nano \
   unzip \
+  build-essential \
+  make \
+  gcc \
+  dos2unix \
+  libssl-dev \
+  libicu-dev \
+  libpcre3-dev \
+  zlib1g-dev \
+  libgd-dev \
+  python3 \
+  procps \
+  apache2-utils \
   git
+
+RUN mkdir /opt/mg_web \
+  && chown irisowner:irisowner /opt/mg_web
+
+USER irisowner
+
+# Get mg-web
+
+RUN echo 'Install nginx and mg_web'
+
+RUN git clone https://github.com/chrisemunt/mg_web  \
+ && cp /home/irisowner/mg_web/src/*.h /opt/mg_web \
+ && cp /home/irisowner/mg_web/src/*.c /opt/mg_web \
+ && cp /home/irisowner/mg_web/src/nginx/* /opt/mg_web \
+ && cp /home/irisowner/mg_web/experimental/mg_web_node.mjs /home/irisowner \
+ && cd /opt/mg_web \
+ && dos2unix *
+
+# Copy the benchmark test scripts into the Container
+
+COPY ./files /home/irisowner
+COPY ./iris/files /home/irisowner
+
+USER root
+
+RUN cd /home/irisowner \
+  && chown irisowner:irisowner *.js \
+  && chown irisowner:irisowner *.mjs \
+  && chown irisowner:irisowner *.txt \
+  && chown irisowner:irisowner mgweb.* \
+  && chown irisowner:irisowner startmgwebnode \
+  && chown -R irisowner:irisowner www \
+  && chmod +x startmgwebnode \
+  && chmod +x nginx \
+  && chmod +x g \
+  && chmod +x gd \
+  && dos2unix *
+
+RUN cd /opt \
+  && wget https://nginx.org/download/nginx-1.25.4.tar.gz \
+  && tar zxf nginx-1.25.4.tar.gz \
+  && cd nginx-1.25.4 \
+  && CFLAGS=-Wno-error ./configure --prefix=/var/www/html --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --with-pcre --lock-path=/var/lock/nginx.lock --pid-path=/var/run/nginx.pid --with-http_ssl_module --with-http_image_filter_module=dynamic --modules-path=/etc/nginx/modules --with-http_v2_module --with-stream=dynamic --with-http_addition_module --with-http_mp4_module --with-threads --add-module=/opt/mg_web \
+  && make \
+  && make install
+
+RUN mv /home/irisowner/nginx.conf /etc/nginx
+
+RUN cd /etc \
+  && chown -R irisowner:irisowner nginx
+
+RUN cd /var/log \
+  && chown -R irisowner:irisowner nginx
+
+RUN cd /var \
+  && chown -R irisowner:irisowner www
 
 USER irisowner
 
 # Install Node.js v 20 using NVM
+
+RUN echo 'Install Node.js and Bun.js'
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash \
   && echo 'export NVM_DIR="$HOME/.nvm"' >> .bashrc \
   && echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm' >> .bashrc \
   && export NVM_DIR="$HOME/.nvm" \
   && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
+  && export NVM_DIR="$HOME/.nvm"  >> .bashrc \
+  && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  >> .bashrc \
   && nvm install 20 \
-  && npm install qoper8-fastify qoper8-stric glsdb mg-dbx-napi @fastify/static json5 \
+  && npm install qoper8-fastify qoper8-stric glsdb mg-dbx-napi @fastify/static mgw-router json5 \
   && npm install autocannon -g \
   && cp -r /usr/irissys/dev/nodejs/* node_modules
 
@@ -47,21 +119,14 @@ USER root
 RUN cd /opt \
   && git clone https://github.com/chrisemunt/mgsi
 
-# Copy the benchmark test scripts into the Container
-
-COPY ./files /home/irisowner
-COPY ./iris/files /home/irisowner
-
-RUN chown irisowner:irisowner *.js \
-  && chown irisowner:irisowner *.mjs \
-  && chown irisowner:irisowner *.txt \
-  && chown -R irisowner:irisowner www \
-  && chmod +x g \
-  && chmod +x gd
-
 # Change the IRIS system password to secret
 
 RUN sed -i 's/PasswordHash=/PasswordHash=2d23c9271a8c4cfbf12abb4553be2817d617a457ab8ccbfceba0fb832ef29c67263fd56f0b6c3bea6f14a675cb5daf921d559bcee0d60b5bb17385b5d0c749b7,8b17803718974c72d35b3d4236d418160145b42a8a2725f5c1c2553dc7df01ae54afd8a17fd5f06401bba850577d32cb807e5034f5bbead49be883604b06444e,10000,SHA512/g' /usr/irissys/iris.cpf
+
+RUN sed -i 's?#!/bin/bash?#!/bin/bash\n/home/irisowner/nginx start?' /home/irisowner/irissys/startISCAgent.sh
+
+RUN rm -r /opt/nginx-1.25.4/ \
+  && rm /opt/nginx-1.25.4.tar.gz
 
 RUN updatedb
 
@@ -82,3 +147,6 @@ RUN iris start IRIS quietly && \
 
 EXPOSE 8080
 EXPOSE 7042
+
+
+

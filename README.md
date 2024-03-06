@@ -66,9 +66,12 @@ all of which are ready to run when you start the container:
 
   - Golgi: An example web application is included that has been built using our Golgi WebComponent framework.  This application can be used to benchmark the performance of JavaScript access to the YottaDB or IRIS databases, and also to graphically explore the database structures of these [Global Storage](https://github.com/robtweed/global_storage) databases.
 
-## Exploring Our JavaScript Technologies
 
-... in-depth documents to follow
+## Further Reading
+
+- [Installing the Containers](./INSTALL.md)
+
+... more to follow
 
 
 ## License
