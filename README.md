@@ -70,6 +70,7 @@ all of which are ready to run when you start the container:
 ## Further Reading
 
 - [Installing the Containers](./INSTALL.md)
+- [Using the mg-showcase Repository Containers](./CONTAINER.md)
 
 ... more to follow
 

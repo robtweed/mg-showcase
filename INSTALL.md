@@ -121,6 +121,7 @@ To start the Container:
 
 ### Notes
 
+- replace the *-it* parameter with *-d* to run the container as a background daemon process
 - replace the *--name* value with any other name you wish
 - use any other external listener port by changing the first value of the *-p* argument, eg:
 
@@ -162,6 +163,7 @@ To start the Container:
 
 ### Notes
 
+- replace the *-it* parameter with *-d* to run the container as a background daemon process
 - replace the --name value with any other name you wish
 - use any other external webserver listener port by changing the first value of the *-p* argument, eg:
 
@@ -206,6 +208,7 @@ To start the Container:
 
 ### Notes
 
+- replace the *-it* parameter with *-d* to run the container as a background daemon process
 - replace the --name value with any other name you wish
 - use any other external webserver listener port by changing the first value of the *-p* argument, eg:
 
