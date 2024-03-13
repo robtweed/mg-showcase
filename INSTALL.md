@@ -101,15 +101,15 @@ Separate Dockerfiles are included in the repository for IRIS, one for Intel/AMD 
 
 ## Building the Container
 
-Before building the containers, first ensure that you are in the *dockerfiles* directory of the repository.
+Before building the containers, first ensure that you are in the root directory of the repository.
 
 For example, if you cloned the *mg-showcase* repository to your root folder:
 
-        cd ~/mg-showcase/dockerfiles
+        cd ~/mg-showcase
 
 To build the Container:
 
-        docker build -t mg-showcase -f yottadb/Dockerfile .
+        docker build -t mg-showcase -f dockerfiles/yottadb/Dockerfile .
 
 Feel free to change the container name to something other than *mg-showcase*.  However, our examples and documentation will assume you've used this name.
 
@@ -143,17 +143,19 @@ When you map a host volume as shown above when starting the Container, YottaDB w
 
 ## Building the Container
 
-Before building the containers, first ensure that you are in the *dockerfiles* directory of the repository.
+Before building the containers, first ensure that you are in the root directory of the repository.
 
 For example, if you cloned the *mg-showcase* repository to your root folder:
 
-        cd ~/mg-showcase/dockerfiles
+        cd ~/mg-showcase
 
 To build the Container:
 
-        docker build -t mg-showcase -f iris/x64/Dockerfile .
+        docker build -t mg-showcase -f dockerfiles/iris/x64/Dockerfile .
 
 Feel free to change the container name to something other than *mg-showcase*.  However, our examples and documentation will assume you've used this name.
+
+Note: you'll experience a delay towards the end of the build whilst some IRIS code is invoked to customise the container and it will appear to sit doing nothing for a while.  This is perfectly normal behaviour: be patient and let it finish.
 
 ## Running the Container
 
@@ -188,17 +190,19 @@ To add persistence, you should follow the
 
 ## Building the Container
 
-Before building the containers, first ensure that you are in the *dockerfiles* directory of the repository.
+Before building the containers, first ensure that you are in the root directory of the repository.
 
 For example, if you cloned the *mg-showcase* repository to your root folder:
 
-        cd ~/mg-showcase/dockerfiles
+        cd ~/mg-showcase
 
 To build the Container:
 
-        docker build -t mg-showcase -f iris/arm64/Dockerfile .
+        docker build -t mg-showcase -f dockerfiles/iris/arm64/Dockerfile .
 
 Feel free to change the container name to something other than *mg-showcase*.  However, our examples and documentation will assume you've used this name.
+
+Note: you'll experience a delay towards the end of the build whilst some IRIS code is invoked to customise the container and it will appear to sit doing nothing for a while.  This is perfectly normal behaviour: be patient and let it finish.
 
 ## Running the Container
 

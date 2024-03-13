@@ -10,22 +10,22 @@ var open = db.open({
   namespace: "USER"
 });
 
-let ydbTest = new mglobal(db, "ydbtest");
+let irisTest = new mglobal(db, "iristest");
 
-ydbTest.delete();
+irisTest.delete();
 
 let max = process.argv[2] || 10000000;
 
 console.log('mg-dbx-napi performance test');
 console.log('Insert and read back ' + max.toLocaleString() + ' key/value pairs');
-console.log('Global name used is ^ydbtest');
+console.log('Global name used is ^iristest');
 console.log('Please wait...')
 console.log('-----');
 
 let start = Date.now();
 
 for (let key = 1; key < max; key++) {
-  ydbTest.set(key,"hello world");
+  irisTest.set(key,"hello world");
 }
 let finish = Date.now();
 let elap = (finish - start)/1000;
@@ -35,7 +35,7 @@ console.log('------');
 
 start = Date.now();
 for (let key = 1; key < max; key++) {
-  let x = ydbTest.get(key);
+  let x = irisTest.get(key);
 }
 finish = Date.now();
 elap = (finish - start)/1000;

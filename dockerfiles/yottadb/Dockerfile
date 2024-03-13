@@ -1,7 +1,5 @@
-# fastify, stric, Bun, Node, Qoper8-cp + YottaDB
-
 # MGateway Ltd
-# 26 February 2024
+# 13 March 2024
 
 FROM debian:bookworm
 
@@ -11,6 +9,8 @@ RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install -y \
   build-essential \
+  make \
+  gcc \
   curl \
   git \
   wget \
@@ -26,34 +26,68 @@ RUN apt-get install -y \
   pkg-config \
   libelf-dev \
   libicu-dev \
+  libssl-dev \
+  libicu-dev \
+  libpcre3-dev \
+  zlib1g-dev \
+  libgd-dev \
   locales \
+  pkg-config \
+  file \
   python3 \
   procps \
+  apache2-utils \
   unzip
 
 # Create app directory
 RUN mkdir -p /opt/mgateway \
  && mkdir /opt/yottadb \
+ && mkdir /opt/mg_web  \
  && mkdir /opt/mgateway/m
 
 WORKDIR /opt/mgateway
-COPY ./files /opt/mgateway
-COPY ./yottadb/files /opt/mgateway
-
-RUN dos2unix * \
- && chmod +x /opt/mgateway/ydb \
- && chmod +x /opt/mgateway/ydb_run \
- && chmod +x /opt/mgateway/ydb_run_temp \
- && chmod +x /opt/mgateway/start \
- && chmod +x /opt/mgateway/stop_ydb \
- && chmod +x /opt/mgateway/stop_ydb_procs \
- && chmod +x /opt/mgateway/rundown \
- && chmod +x /opt/mgateway/g \
- && chmod +x /opt/mgateway/gd
+COPY ./dockerfiles/files /opt/mgateway
+COPY ./dockerfiles/yottadb/files /opt/mgateway
 
 RUN locale-gen "en_US.UTF-8"
 
 RUN mkdir -p /var/www/html
+
+# Get mg-web
+
+RUN echo 'Install nginx'
+
+RUN git clone https://github.com/chrisemunt/mg_web  \
+ && cp /opt/mgateway/mg_web/src/*.h /opt/mg_web \
+ && cp /opt/mgateway/mg_web/src/*.c /opt/mg_web \
+ && cp /opt/mgateway/mg_web/src/nginx/* /opt/mg_web \
+ && cp /opt/mgateway/mg_web/experimental/mg_web_node.mjs /opt/mgateway \
+ && cd /opt/mg_web \
+ && dos2unix *
+
+RUN cd /opt/mgateway \
+ && dos2unix * \
+ && chmod +x ydb \
+ && chmod +x ydb_run \
+ && chmod +x ydb_run_temp \
+ && chmod +x start \
+ && chmod +x stop_ydb \
+ && chmod +x stop_ydb_procs \
+ && chmod +x rundown \
+ && chmod +x startmgwebnode \
+ && chmod +x nginx \
+ && chmod +x g \
+ && chmod +x gd
+
+RUN cd /opt \
+  && wget https://nginx.org/download/nginx-1.25.4.tar.gz \
+  && tar zxf nginx-1.25.4.tar.gz \
+  && cd nginx-1.25.4 \
+  && CFLAGS=-Wno-error ./configure --prefix=/var/www/html --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --with-pcre --lock-path=/var/lock/nginx.lock --pid-path=/var/run/nginx.pid --with-http_ssl_module --with-http_image_filter_module=dynamic --modules-path=/etc/nginx/modules --with-http_v2_module --with-stream=dynamic --with-http_addition_module --with-http_mp4_module --with-threads --add-module=/opt/mg_web \
+  && make \
+  && make install
+
+RUN mv /opt/mgateway/nginx.conf /etc/nginx
 
 # ===  Install Node.js & NPM
 
@@ -65,14 +99,16 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
   && export NVM_DIR="$HOME/.nvm" \
   && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
   && nvm install 20 \
-  && npm install qoper8-fastify qoper8-stric glsdb mg-dbx-napi @fastify/static json5 \
+  && npm install qoper8-fastify qoper8-stric glsdb mg-dbx-napi @fastify/static mgw-router json5 \
   && npm install autocannon -g
 
 # Install Bun
 
 RUN curl -fsSL https://bun.sh/install | bash \
   && export BUN_INSTALL="$HOME/.bun" \
-  && export PATH="$BUN_INSTALL/bin:$PATH"
+  && export PATH="$BUN_INSTALL/bin:$PATH" \
+  && echo "Installed Bun version:" \
+  && bun -v
 
 RUN echo "Installing YottaDB..."
 
@@ -109,7 +145,9 @@ RUN cp /opt/mgateway/mgsi/unix/zmgsi_ydb /usr/local/lib/yottadb/r138 \
 
 RUN cd /opt/mgateway \
   && rm gde.txt \
-  && rm ydb_run_temp
+  && rm ydb_run_temp \
+  && rm -r /opt/nginx-1.25.4/ \
+  && rm /opt/nginx-1.25.4.tar.gz
 
 RUN updatedb
 

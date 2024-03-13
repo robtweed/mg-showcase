@@ -1,5 +1,5 @@
 # MGateway Ltd
-# 6 March 2024
+# 13 March 2024
 
 FROM containers.intersystems.com/intersystems/iris-community:2023.3-linux-arm64
 
@@ -48,8 +48,8 @@ RUN git clone https://github.com/chrisemunt/mg_web  \
 
 # Copy the benchmark test scripts into the Container
 
-COPY ./files /home/irisowner
-COPY ./iris/files /home/irisowner
+COPY ./dockerfiles/files /home/irisowner
+COPY ./dockerfiles/iris/files /home/irisowner
 
 USER root
 

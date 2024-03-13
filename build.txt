@@ -1,6 +1,6 @@
 Before building, first ensure you're in the parent directory:
 
-cd /mg-showcase/dockerfiles
+cd /mg-showcase
 
 
 IRIS
@@ -9,13 +9,13 @@ IRIS
 IRIS: Intel x64 Linux:
 ----------------
 
-docker build -t mg-showcase -f iris/x64/Dockerfile .
+docker build -t mg-showcase -f dockerfiles/iris/x64/Dockerfile .
 
 
 IRIS: Intel ARM64 Linux:
 ----------------
 
-docker build -t mg-showcase -f iris/arm64/Dockerfile .
+docker build -t mg-showcase -f dockerfiles/iris/arm64/Dockerfile .
 
 
 To Run any IRIS build:
@@ -35,7 +35,7 @@ To run with database persistence, consult the IRIS Docker documentation.
 YottaDB: Any Supported Linux Platform (x64 or ARM64):
 -----------------------------------------------------
 
-docker build -t mg-showcase -f yottadb/Dockerfile .
+docker build -t mg-showcase -f dockerfiles/yottadb/Dockerfile .
 
 
 Running:

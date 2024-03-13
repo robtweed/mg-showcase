@@ -10,8 +10,16 @@ Google Group for discussions, support, advice etc: [http://groups.google.co.uk/g
 
 ## Background
 
-This *mgw-showcase* repository is designed to allow anyone interested in our JavaScript-based
-technology to quickly and easily try it out, explore it and begin to make use of it.
+[Global Storage Databases](https://github.com/robtweed/global_storage) are the fastest and most flexible databases technologies available today, and yet are almost unknown outside a few niche marketplaces.  Their design makes them a natural fit for JavaScript where they can uniquely provide direct persistence of JavaScript Objects and JSON data structures from within the language.
+
+Whilst JavaScript interfaces to Global Storage Databases have been available for some time, all have previously suffered from severe performance bottlenecks which have negated the extremely high performance potential of the databases.
+
+MGateway Ltd have long been an independent pioneer in bringing Global Storage Database to the attention of the wider mainstream of the IT industry, and have striven to deliver the highest possible performance in their technologies.  Our latest generation of solutions now allow the full ultra-high performance and unique flexibility of Global Storage databases to be available to the JavaScript developer.  If you are a JavaScript developer who is looking for  database performance that is orders of magnitude better than anything else on the marketplace, then we believe we have the solutions you need, and this *mg-showcase* repository is for you!
+
+Our *mg-showcase* repository is designed to allow anyone interested in our JavaScript-based
+technology to quickly and easily try it out, explore it and begin to make use of it, allowing JavaScript developers to discover and try out for themselves these uniquely powerful database technologies.
+
+## Repository Contents
 
 The repository includes three Docker installations that you can build and run: all you need is
 an Intel X64 machine or ARM64 machine (eg Apple M1 or M2, Raspberry Pi 4 or later) with Docker
@@ -53,7 +61,7 @@ all of which are ready to run when you start the container:
 
 - Server-side technologies:
 
-  - mg-dbx-napi: extremely high-performance interface to YottaDB and IRIS
+  - mg-dbx-napi: our extremely high-performance interface to YottaDB and IRIS
   - qoper8-cp: queue-based Child Process pool management utility
   - glsdb: abstracting the YottaDB and IRIS databases into persistent JSON/JavaScript Object stores
   - qoper8-fastify: a Fastify Plug-in that integrates qoper8-cp, mg-dbx-napi and glsdb
@@ -71,6 +79,7 @@ all of which are ready to run when you start the container:
 
 - [Installing the Containers](./INSTALL.md)
 - [Using the mg-showcase Repository Containers](./CONTAINER.md)
+- [Basic Performance Benchmarking Demonstrations](./BASIC-BENCHMARKS.md)
 
 ... more to follow
 
