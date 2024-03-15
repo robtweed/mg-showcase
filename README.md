@@ -81,6 +81,7 @@ all of which are ready to run when you start the container:
 - [Using the mg-showcase Repository Containers](./CONTAINER.md)
 - [Basic Performance Benchmarking Demonstrations](./BASIC-BENCHMARKS.md)
 - [Quick Guide to Examining the Contents of your Database](./DATABASE.md)
+- [Persistent JSON Performance Benchmark Demomstration](./JSON-BENCHMARKS.md)
 
 ... more to follow
 

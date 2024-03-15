@@ -18,7 +18,7 @@ We've included such a pre-built web server in each *mg-showcase* Container.  It 
 [QOper8](https://github.com/robtweed/qoper8-cp) package, along with our 
 [qoper8-fastify](https://github.com/robtweed/qoper8-fastify) plug-in package for Fastify.  
 
-QOper8 is needed to allow the synchronous *mg-dbx-napi* interface calls to work cleanly in the otherwise single-threaded run-time environment of Node.js
+QOper8 is needed to allow the synchronous *mg-dbx-napi* interface calls to work cleanly in the otherwise single-threaded multi-concurrency run-time environment of Node.js
 
 You can take a look at the source code for the web server:
 
@@ -78,6 +78,23 @@ Hit the *Go!* button at the bottom-right of the form, and you should see a pop-u
 
 
 ### Benchmark Results
+
+The benchmark results pop-up wll show three sets of figures:
+
+- set performance: timings for writing the records to the database
+- get performance (using nested nexts): timings for reading the records from the database, using a recursive search of all child nodes in the database structure
+- get performance (using mcursor/leaf nodes): timings for reading the records from the database, using a search of just the leaf nodes in the database structure.
+
+Each set of figures includes a button that allows you to drill-down further into the statistics to see how the various *mg-dbx-napi* interface calls were used.
+
+We'll be using this tool and these figures ourselves for further performance tuning of *mg-dbx-napi*.
+
+One interesting thing you'll notice straight away is that reading these more complex JSON results back from the database appears to be slower than setting them.  If you drill down into the statistics you'll find out why this tends to be the case:
+
+- writing/setting the records requires a single call to the *mg-dbx-napi* *set* API for each record
+- reading/getting the records back requires multiple different calls, eg when using the "nested next" approach, each record requires one *mg-dbx-napi* *get* API calls and two *defined* and *next* API calls.
+
+Another interesting thing to note is that although the *mcursor/leaf node* method of retrieving records should be more efficient than the exhaustive *nested next* method, it appears to be slower.  This is something we'll be examining ourselves to find out if/how the *mg-dbx-napi* calls used by the *mcursor/leaf node* method can be further optimised.
 
 
 ### Web Server Activity Log
@@ -182,5 +199,64 @@ It's the handler module, running in the Node.js child process, that saved the co
 The handler module then returned, as a response, the performance statistics, and this response was forwarded by the Fastify master process to your browser.
 
 
+## Examining the Records in the Database
 
+Try using the tools described in the earlier 
+[Quick Guide](https://github.com/robtweed/mg-showcase/blob/master/DATABASE.md) document to see how this JSON Object has been stored in the database.
+
+You'll see that each record has been stored in the following way:
+
+        ^bmTest(n,"hello")="world"
+
+        where n is an integer representing the record number
+
+
+## Increasing the Number of Records
+
+Creating and retrieving just 100 records doesn't really give us a good idea of the performance capabilities of both the database and the *mg-dbx-napi* interface.  So let's increase the number of records from 100 to, say, 50,000 and click the *Go!* button again.  Here's a sample result using the YottaDB Container running on an ARM64-based M1 Mac Mini:
+
+![benchmark results 2](images/benchmark-results-2.png)
+
+So for this relatively simple *{hello: 'world'}* object, we're getting a write rate of around 250,000/sec: a lot less than the results when writing a simple key/value pair, but still a very respectable result.
+
+Reading the JSON objects back is slower, at around 160,000/sec when using the *nested next* approach, and you can see that the *mcursor/leaf node* approach is very much slower at around 14,000/sec.
+
+
+## Increasing the JSON Complexity
+
+
+Now try a more complex JSON document, for example:
+
+
+        {
+          name: 'Rob Tweed',
+          address: {
+            houseNo: 9,
+            city: 'Redhill',
+            county: 'Surrey'
+          },
+          telephone: '0790123456'
+        }
+
+and we'll create 10,000 records with this object.
+
+Here's our results on our M1 Mac Mini:
+
+
+![benchmark results 3](images/benchmark-results-3.png)
+
+
+You can see that the set and get rates are now down to around 59,000/sec and 46,000/sec, and if you drill down into the stats you'll see why: each record requires a lot more *mg-dbx-napi* calls to create and read back.
+
+You'll begin to understand why this is the case if you examine how this JSON object is being stored in the database:
+
+        ^bmTest(n,"address","city")="Redhill"
+        ^bmTest(n,"address","county")="Surrey"
+        ^bmTest(n,"address","houseNo")=9
+        ^bmTest(n,"name")="Rob Tweed"
+        ^bmTest(n,"telephone")="0790123456"
+
+So each record requires not only 5 individual database records for its storage, but some also require more keys/subscripts.
+
+Now try your own examples and explore the performance of these databases for storing and retrieving JSON documents.
 
