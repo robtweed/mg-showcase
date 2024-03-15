@@ -43,10 +43,10 @@ You can take a look at the source code for the web server:
 
 You should see something like this:
 
-========================================================
-qoper8-cp Build 5.2; 1 October 2023 running in process 257
-Max Child Process Worker Pool Size: 2
-========================================================
+        ========================================================
+        qoper8-cp Build 5.2; 1 October 2023 running in process 257
+        Max Child Process Worker Pool Size: 2
+        ========================================================
 
 
 The Web Server is now running and listening on port 3000.  Assuming you mapped port 3000 when you started the Container, you should be able to access it externally using a browser, eg:
@@ -64,7 +64,7 @@ Click the *Benchmark* link in the left-hand menu panel that you'll see in your b
 
 ![benchmark form](images/benchmark-form.png)
 
-You'll see that by default, the application will create 100 instances of the JSON you specify, saving them into a Global Document named *bmtest*.  We'll use these defaults for now, so the only thing you need to do is to define a JSON object to use for the test.
+You'll see that by default, the application will create 100 instances of the JSON you specify, saving them into a Global Document named *bmTest*.  We'll use these defaults for now, so the only thing you need to do is to define a JSON object to use for the test.
 
 The JSON can be specified formally and "correctly" using double-quoted names and string values, but the application makes use of the [JSON5](https://json5.org/) package, so you can use the much simpler *string-literal* style.
 
