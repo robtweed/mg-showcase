@@ -113,21 +113,27 @@ To build the Container:
 
 Feel free to change the container name to something other than *mg-showcase*.  However, our examples and documentation will assume you've used this name.
 
+Note: if you're upgrading the Container to a later release version, it's a good idea to disable the Docker build cache and force a complete rebuild, eg:
+
+        docker build --no-cache -t mg-showcase -f dockerfiles/yottadb/Dockerfile .
+
 ## Running the Container
 
 To start the Container:
 
-        docker run -it --name mg-showcase --rm -p 8080:8080 -v ~/yottadb-vol:/opt/mgateway/mapped mg-showcase
+        docker run -it --name mg-showcase --rm -p 8080:8080 -p 3000:3000 -p 7042:7042 -v ~/yottadb-vol:/opt/mgateway/mapped mg-showcase
 
 ### Notes
 
 - replace the *-it* parameter with *-d* to run the container as a background daemon process
 - replace the *--name* value with any other name you wish
-- use any other external listener port by changing the first value of the *-p* argument, eg:
+- use any other external listener port(s) by changing the first value of the *-p* arguments, eg:
 
-        -p 3000:8080
+        -p 8082:8080
 
-  The internal listener port should always be 8080
+  The internal web server listener ports should always be 8080 and 3000
+
+- port 7042 is for optional networked access to the database using our *mgsi* interface
 
 - replace the mapped host directory (*~/yottadb-vol*) with any other folder you want to use
 - replace *mg-showcase* appropriately if you built it with a different name
@@ -155,23 +161,30 @@ To build the Container:
 
 Feel free to change the container name to something other than *mg-showcase*.  However, our examples and documentation will assume you've used this name.
 
-Note: you'll experience a delay towards the end of the build whilst some IRIS code is invoked to customise the container and it will appear to sit doing nothing for a while.  This is perfectly normal behaviour: be patient and let it finish.
+Note 1: you'll experience a delay towards the end of the build whilst some IRIS code is invoked to customise the container and it will appear to sit doing nothing for a while.  This is perfectly normal behaviour: be patient and let it finish.
+
+Note 2: if you're upgrading the Container to a later release version, it's a good idea to disable the Docker build cache and force a complete rebuild, eg:
+
+        docker build --no-cache -t mg-showcase -f dockerfiles/iris/x64/Dockerfile .
 
 ## Running the Container
 
 To start the Container:
 
-        docker run -it --name mg-showcase -it --rm -p 1972:1972 -p 52773:52773 -p 51773:51773 -p 7042:7042 -p 8080:8080 -v ~/iris-vol:/home/irisowner/mapped mg-showcase --check-caps false
+        docker run -it --name mg-showcase -it --rm -p 1972:1972 -p 52773:52773 -p 51773:51773 -p 7042:7042 -p 8080:8080 -p 3000:3000 -v ~/iris-vol:/home/irisowner/mapped mg-showcase --check-caps false
 
 ### Notes
 
 - replace the *-it* parameter with *-d* to run the container as a background daemon process
 - replace the --name value with any other name you wish
-- use any other external webserver listener port by changing the first value of the *-p* argument, eg:
+- use any other external listener port(s) by changing the first value of the *-p* arguments, eg:
 
-        -p 3000:8080
+        -p 8082:8080
 
-  The internal webserver listener port should always be 8080
+  The internal web server listener ports should always be 8080 and 3000
+
+- ports 1972, 52773 and 51773 are for use with various IRIS-specific functionality
+- port 7042 is for optional networked access to the database using our *mgsi* interface
 
 - replace the mapped host directory (*~/iris-vol*) with any other folder you want to use
 - replace *mg-showcase* appropriately if you built it with a different name
@@ -202,23 +215,30 @@ To build the Container:
 
 Feel free to change the container name to something other than *mg-showcase*.  However, our examples and documentation will assume you've used this name.
 
-Note: you'll experience a delay towards the end of the build whilst some IRIS code is invoked to customise the container and it will appear to sit doing nothing for a while.  This is perfectly normal behaviour: be patient and let it finish.
+Note 1: you'll experience a delay towards the end of the build whilst some IRIS code is invoked to customise the container and it will appear to sit doing nothing for a while.  This is perfectly normal behaviour: be patient and let it finish.
+
+Note 2: if you're upgrading the Container to a later release version, it's a good idea to disable the Docker build cache and force a complete rebuild, eg:
+
+        docker build --no-cache -t mg-showcase -f dockerfiles/iris/arm64/Dockerfile .
 
 ## Running the Container
 
 To start the Container:
 
-        docker run -it --name mg-showcase -it --rm -p 1972:1972 -p 52773:52773 -p 51773:51773 -p 7042:7042 -p 8080:8080 -v ~/iris-vol:/home/irisowner/mapped mg-showcase --check-caps false
+        docker run -it --name mg-showcase -it --rm -p 1972:1972 -p 52773:52773 -p 51773:51773 -p 7042:7042 -p 8080:8080 -p 3000:3000 -v ~/iris-vol:/home/irisowner/mapped mg-showcase --check-caps false
 
 ### Notes
 
 - replace the *-it* parameter with *-d* to run the container as a background daemon process
 - replace the --name value with any other name you wish
-- use any other external webserver listener port by changing the first value of the *-p* argument, eg:
+- use any other external listener port(s) by changing the first value of the *-p* arguments, eg:
 
-        -p 3000:8080
+        -p 8082:8080
 
-  The internal webserver listener port should always be 8080
+  The internal web server listener ports should always be 8080 and 3000
+
+- ports 1972, 52773 and 51773 are for optional use with various IRIS-specific functionality
+- port 7042 is foroptional  networked access to the database using our *mgsi* interface
 
 - replace the mapped host directory (*~/iris-vol*) with any other folder you want to use
 - replace *mg-showcase* appropriately if you built it with a different name

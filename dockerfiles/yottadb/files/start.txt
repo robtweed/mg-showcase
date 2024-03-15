@@ -13,3 +13,14 @@ If you want to use a different port on your host system, change the -p argument 
 Start with local persistence within container only:
 
   docker run -it --name glsdb --rm -p 8080:8080 glsdb
+
+
+=========
+
+Enabling nginx proxying (nginx on 8080, nws web server on 3000)
+
+docker run -it --name ydb --rm -p 8080:8080 -v ~/yottadb-vol:/opt/mgateway/mapped -e "urlprefix=/nws" ydb
+
+
+http://192.168.1.123:8080/nws    to access nws web server's index.html
+
