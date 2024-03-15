@@ -14,7 +14,7 @@ Google Group for discussions, support, advice etc: [http://groups.google.co.uk/g
 
 Whilst JavaScript interfaces to Global Storage Databases have been available for some time, all have previously suffered from severe performance bottlenecks which have negated the extremely high performance potential of the databases.
 
-MGateway Ltd have long been an independent pioneer in bringing Global Storage Database to the attention of the wider mainstream of the IT industry, and have striven to deliver the highest possible performance in their technologies.  Our latest generation of solutions now allow the full ultra-high performance and unique flexibility of Global Storage databases to be available to the JavaScript developer.  If you are a JavaScript developer who is looking for  database performance that is orders of magnitude better than anything else on the marketplace, then we believe we have the solutions you need, and this *mg-showcase* repository is for you!
+MGateway Ltd have long been an independent pioneer in bringing Global Storage Database technologies to the attention of the wider mainstream of the IT industry, and have striven to deliver the highest possible performance in their technologies.  Our latest generation of solutions now allow the full ultra-high performance and unique flexibility of Global Storage databases to be available to the JavaScript developer.  If you are a JavaScript developer who is looking for  database performance that is orders of magnitude better than anything else on the marketplace, then we believe we have the solutions you need, and this *mg-showcase* repository is for you!
 
 Our *mg-showcase* repository is designed to allow anyone interested in our JavaScript-based
 technology to quickly and easily try it out, explore it and begin to make use of it, allowing JavaScript developers to discover and try out for themselves these uniquely powerful database technologies.
@@ -80,6 +80,7 @@ all of which are ready to run when you start the container:
 - [Installing the Containers](./INSTALL.md)
 - [Using the mg-showcase Repository Containers](./CONTAINER.md)
 - [Basic Performance Benchmarking Demonstrations](./BASIC-BENCHMARKS.md)
+- [Quick Guide to Examining the Contents of your Database](./DATABASE.md)
 
 ... more to follow
 

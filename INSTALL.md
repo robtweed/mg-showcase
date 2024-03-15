@@ -32,7 +32,7 @@ Now you can simply use the *docker* command.
 ## Install *git*
 
 You'll need to ensure that you can clone this Github Repository to your host machine, so make sure
-you have installed *git*.  If not. on Linux systems:
+you have installed *git*.  If not, on Linux systems:
 
         sudo apt-get update
         sudo apt-get install -y git
