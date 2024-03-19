@@ -10,7 +10,7 @@ let logging = process.argv[2] || false;
 
 let app = new App({
   serve: {
-    port: 8080,
+    port: 3000,
     hostname: '0.0.0.0'
   }
 });
@@ -76,7 +76,6 @@ const options = {
 let qoper8 = await QOper8_Plugin(router, options);;
 
 router.get('/*', async (ctx) => {
-  console.log(ctx);
   let path = '/opt/mgateway/www/' + ctx.path;
   try {
     const page = await Bun.file(path).text();
