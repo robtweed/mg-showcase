@@ -1,6 +1,8 @@
 # MGateway Ltd
 # 13 March 2024
 
+# Version 1.1
+
 FROM debian:bookworm
 
 ARG DEBIAN_FRONTEND=noninteractive

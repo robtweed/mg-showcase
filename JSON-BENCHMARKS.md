@@ -9,6 +9,8 @@ If you're interested in exploring the performance of the YottaDB and IRIS Global
 
 This web application allows you to specify a JSON data object which the application then replicates and saves a specified number of copies into the database.  It then reads back each saved copy.  You'll be able to see how quickly the JSON data object is saved and retrieved.  You can also drill down and discover the number and type of *mg-dbx-napi* interface calls to the database were required for saving and retrieving copies of your JSON object.
 
+This web application makes use of our [*glsdb* abstraction of Global Storage](https://github.com/robtweed/glsdb).
+
 ## The Web Server used for the JSON Benchmark Application
 
 Since the benchmark application is a web application, you need to start a web server on your Container, and that web server needs access to the front-end UI logic needed by your browser, as well as the back-end logic that does the actual saving and retrieving of your JSON object to/from the Container's installed database.
@@ -24,6 +26,13 @@ You can take a look at the source code for the web server:
 
 - [YottaDB](./dockerfiles/yottadb/files/nws.mjs)
 - [IRIS](./dockerfiles/iris/files/nws.mjs)
+
+If you're interested in how *glsdb* is used within the application's benchmark API handler module, you can 
+[view the source code for the modules here](./dockerfiles/files/handlers/benchmark.mjs).  Here's the key lines to look for:
+
+        for (let key = 1; key < max; key++) {
+          doc.$(key).document = json;
+        }
 
 
 ## Getting Started

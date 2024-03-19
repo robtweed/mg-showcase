@@ -8,6 +8,10 @@ Twitter: @rtweed
 Google Group for discussions, support, advice etc: [http://groups.google.co.uk/group/enterprise-web-developer-community](http://groups.google.co.uk/group/enterprise-web-developer-community)
 
 
+## Version
+
+This is version 1.1 of the *mg-showcase* repository and Containers
+
 ## Background
 
 [Global Storage Databases](https://github.com/robtweed/global_storage) are the fastest and most flexible databases technologies available today, and yet are almost unknown outside a few niche marketplaces.  Their design makes them a natural fit for JavaScript where they can uniquely provide direct persistence of JavaScript Objects and JSON data structures from within the language.
@@ -82,6 +86,9 @@ all of which are ready to run when you start the container:
 - [Basic Performance Benchmarking Demonstrations](./BASIC-BENCHMARKS.md)
 - [Quick Guide to Examining the Contents of your Database](./DATABASE.md)
 - [Persistent JSON Performance Benchmark Demomstration](./JSON-BENCHMARKS.md)
+- Tutorials
+  - [Getting Started with the mg-dbx-napi Interface](./TUTORIAL-MGDBX.md)
+  - [Using the mg-dbx-napi Interface with Fastify](./TUTORIAL-MGDBX-FASTIFY.md)
 
 ... more to follow
 
