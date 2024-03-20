@@ -401,6 +401,96 @@ Now of course, this is a very simple test of a very simple key/value pair data s
 
 In the next document we'll look at how you can test and measure the performance when writing and reading more complex data structures.
 
+----
+
+# Comparison With Redis
+
+The most commonly-used database used with Node.js for high-performance storage and retrieval of key/value data is Redis.  It's generally considered to be an extremely high-performance persistence store.
+
+So how does it compare with YottaDB and IRIS?
+
+To answer that, you'll find that the Container includes a pre-installed copy of Redis and the standard *redis* interface package for Node.js.  We've also included a benchmark test that closely matches the key/value storage used in the YottaDB and IRIS benchmark tests.  You can [find the file here](./dockerfiles/files/benchmark_redis.js)
+ in the repo and you'll also find it in your running Container's default directory:
+
+- YottaDB: /opt/mgateway/benchmark_redis.js
+- IRIS: /home/irisowner/benchmark_redis.js
+
+Here's our results when run on the exact same hardware as the *mg-dbx-napi* tests above:
+
+- Processor: X64 - Intel(R) Celeron(R) 2955U @ 1.40GHz with 2 Cores
+
+        root@db72cac4c3df:/opt/mgateway# node benchmark_redis.mjs
+        Redis performance test
+        Insert and read back 100,000 key/value pairs using HSET and HGET
+        Please wait...
+        -----
+        finished 100,000 inserts in 8 seconds
+        rate: 11,293 /sec
+        ------
+        finished 100,000 gets in 8 seconds
+        rate: 11,499 /sec
+        -----------
+
+        Redis performance test
+        Insert and read back 100,000 key/value pairs using SET and GET
+        Please wait...
+        -----
+        finished 100,000 inserts in 8 seconds
+        rate: 11,552 /sec
+        ------
+        finished 100,000 gets in 8 seconds
+        rate: 11,814 /sec
+
+- Processor: ARM64 - Standard M1 Apple Mac Mini with 8 CPU cores
+
+        root@15b9ed4d53af:/opt/mgateway# node benchmark_redis.mjs
+        Redis performance test
+        Insert and read back 100,000 key/value pairs using HSET and HGET
+        Please wait...
+        -----
+        finished 100,000 inserts in 5 seconds
+        rate: 17,056 /sec
+        ------
+        finished 100,000 gets in 5 seconds
+        rate: 17,079 /sec
+        -----------
+
+        Redis performance test
+        Insert and read back 100,000 key/value pairs using SET and GET
+        Please wait...
+        -----
+        finished 100,000 inserts in 5 seconds
+        rate: 17,041 /sec
+        ------
+        finished 100,000 gets in 5 seconds
+        rate: 17,123 /sec
+
+You can see that the performance of YottaDB and IRIS using our *mg-dbx-napi* interface is orders of magnitude higher than using Redis.
+
+Redis, of course, uses a networked interface, and one trick it has up its sleeve is pipelining to improve performance.  You'll find another test for Redis using a pipelined connection: look for:
+
+- YottaDB: /opt/mgateway/benchmark_redis_pl.js
+- IRIS: /home/irisowner/benchmark_redis_pl.js
+
+Here's the results running in on our ARM64 M1 Mac Mini:
+
+        root@15b9ed4d53af:/opt/mgateway# node benchmark_redis_pl.mjs
+        Redis performance test: pipelined
+        Insert and read back 500,000 key/value pairs using HSET and HGET
+        Please wait...
+        -----
+        finished 500,000 inserts in 1 seconds
+        rate: 256,016 /sec
+        ------
+        finished 500,000 gets in 1 seconds
+        rate: 264,970 /sec
+        -----------
+
+So this is a definite improvement, but still a small fraction - under 20% - of the performance of YottaDB and IRIS using our *mg-dbx-napi* interface.
+
+Our conclusion is clear: if you want to achieve a significant improvement in persistent key/value pair storage when using Node.js, you need to think about replacing Redis with YottaDB and IRIS!
+
+----
 
 # Comparison with the Native Node.js API for IRIS
 
@@ -433,7 +523,55 @@ You can run this using Node.js.  Here's examples on our two test machines:
         finished 1,000,000 gets in 10 seconds
         rate: 95,584 /sec
 
-You can see that, by comparison with the earlier results for our *mg-dbx-napi*'s API-based interface, the vendor-provided *Native Node.js API* delivers 10% or less performance when using the exact same database instance on the exact same hardware,
+You can see that, by comparison with the earlier results for our *mg-dbx-napi*'s API-based interface, the vendor-provided *Native Node.js API* delivers 10% or less of the performance of *mg-dbx-napi* when using the exact same database instance on the exact same hardware,
+and when creating an almost identical set of persistent key/value pairs.
+
+----
+
+# Comparison with the NodeM Interface for YottaDB
+
+In the YottaDB documentation you will see that for Node.js access there is another interface package available that is known as [*NodeM*](https://github.com/dlwicksell/nodem).  If you're already a YottaDB user and using this interface, you may be interested to know how it compares with our *mg-dbx-napi* interface.
+
+Both interfaces have much in common: they each allow both network and in-process/API connections to be made between Node.js and YottaDB.
+
+However, you'll find that not only does our *mg-dbx-napi* interface support Bun.js as well as Node.js, its performance is significantly higher than that of *NodeM*. 
+
+You can see for yourself what kind of performance you get by comparison via NodeM: we've included a script that runs the equivalent key/value pair test.  You'll see it in the default directory when you shell into the container: *benchmark_nodem.js*.
+
+You can run this using Node.js.  Here's examples on our two test machines:
+
+
+- Processor: X64 - Intel(R) Celeron(R) 2955U @ 1.40GHz with 2 Cores
+
+        root@db72cac4c3df:/opt/mgateway# node benchmark_nodem.js 1000000
+        Node.js Adaptor for YottaDB: Version: 0.20.4 (ABI=115) [FWS]; YottaDB Version: 1.38
+        Nodem performance test
+        Insert and read back 1000000 key/value pairs
+        Global name used is ^ydbtest
+        Please wait...
+        -----
+        finished 1000000 inserts in 11 seconds
+        rate: 88,167 /sec
+        ------
+        finished 1000000 gets in 13 seconds
+        rate: 72,421 /sec
+
+- Processor: ARM64 - Standard M1 Apple Mac Mini with 8 CPU cores
+
+        root@15b9ed4d53af:/opt/mgateway# node benchmark_nodem.js 1000000
+        Node.js Adaptor for YottaDB: Version: 0.20.4 (ABI=115) [FWS]; YottaDB Version: 1.38
+        Nodem performance test
+        Insert and read back 1000000 key/value pairs
+        Global name used is ^ydbtest
+        Please wait...
+        -----
+        finished 1000000 inserts in 3 seconds
+        rate: 286,697 /sec
+        ------
+        finished 1000000 gets in 4 seconds
+        rate: 244,319 /sec
+
+You can see that, by comparison with the earlier results for our *mg-dbx-napi*'s API-based interface, *NodeM* delivers significantly lower performance than *mg-dbx-napi* when using the exact same database instance on the exact same hardware,
 and when creating an almost identical set of persistent key/value pairs.
 
 

@@ -138,6 +138,19 @@ To start the Container:
 - replace the mapped host directory (*~/yottadb-vol*) with any other folder you want to use
 - replace *mg-showcase* appropriately if you built it with a different name
 
+- you may see the following warning when starting up the container:
+
+        # WARNING Memory overcommit must be enabled! Without it, a background save or 
+        replication may fail under low memory condition. Being disabled, it can also 
+        cause failures without low memory condition, see 
+        https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 
+        'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the 
+        command 'sysctl vm.overcommit_memory=1' for this to take effect.    
+
+  This relates to the Redis installation.  As we have only included Redis for the purposes of
+performance comparisons, it can be safely ignored.  Note that the suggested fix needs to be applied to
+the host system and not the Docker Container.
+
 ### Data Persistence
 
 When you map a host volume as shown above when starting the Container, YottaDB will automatically use that host volume for the location of its database files.  As a result, each time you stop and restart the container, any information stored in the YottaDB database will be retained, provided, of course, you map the same host volume each time.
@@ -189,6 +202,18 @@ To start the Container:
 - replace the mapped host directory (*~/iris-vol*) with any other folder you want to use
 - replace *mg-showcase* appropriately if you built it with a different name
 
+- you may see the following warning when starting up the container:
+
+        # WARNING Memory overcommit must be enabled! Without it, a background save or 
+        replication may fail under low memory condition. Being disabled, it can also 
+        cause failures without low memory condition, see 
+        https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 
+        'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the 
+        command 'sysctl vm.overcommit_memory=1' for this to take effect.    
+
+  This relates to the Redis installation.  As we have only included Redis for the purposes of
+performance comparisons, it can be safely ignored.  Note that the suggested fix needs to be applied to
+the host system and not the Docker Container.
 
 ### Data Persistence
 
@@ -243,6 +268,18 @@ To start the Container:
 - replace the mapped host directory (*~/iris-vol*) with any other folder you want to use
 - replace *mg-showcase* appropriately if you built it with a different name
 
+- you may see the following warning when starting up the container:
+
+        # WARNING Memory overcommit must be enabled! Without it, a background save or 
+        replication may fail under low memory condition. Being disabled, it can also 
+        cause failures without low memory condition, see 
+        https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 
+        'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the 
+        command 'sysctl vm.overcommit_memory=1' for this to take effect.    
+
+  This relates to the Redis installation.  As we have only included Redis for the purposes of
+performance comparisons, it can be safely ignored.  Note that the suggested fix needs to be applied to
+the host system and not the Docker Container.
 
 ### Data Persistence
 

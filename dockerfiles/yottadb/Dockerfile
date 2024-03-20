@@ -1,7 +1,7 @@
 # MGateway Ltd
-# 13 March 2024
+# 20 March 2024
 
-# Version 1.1
+# Version 2.1
 
 FROM debian:bookworm
 
@@ -78,6 +78,7 @@ RUN cd /opt/mgateway \
  && chmod +x rundown \
  && chmod +x startmgwebnode \
  && chmod +x nginx \
+ && chmod +x install_nodem \
  && chmod +x g \
  && chmod +x gd
 
@@ -101,7 +102,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
   && export NVM_DIR="$HOME/.nvm" \
   && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
   && nvm install 20 \
-  && npm install qoper8-fastify qoper8-stric glsdb mg-dbx-napi @fastify/static mgw-router json5 \
+  && npm install qoper8-fastify qoper8-stric glsdb mg-dbx-napi @fastify/static mgw-router json5 redis \
   && npm install autocannon -g
 
 # Install Bun
@@ -123,6 +124,18 @@ RUN mkdir /tmp/tmp \
   && /usr/local/lib/yottadb/r138/mumps -run ^GDE < /opt/mgateway/gde.txt \
   && /usr/local/lib/yottadb/r138/mupip create \
   && /usr/local/lib/yottadb/r138/mupip extend -blocks=48000 DEFAULT
+
+RUN ./install_nodem \
+  && cp /opt/mgateway/node_modules/nodem/src/v4wNode.m /opt/mgateway/m
+
+# Install Redis
+
+RUN curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg \
+  && echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/redis.list \
+  && apt update \
+  && apt install -y redis \
+  && redis-server --daemonize yes \
+  && update-rc.d redis-server defaults
 
 # Install and configure the network mgsi interface code to allow
 # network access to YottaDB (default setup uses
@@ -154,6 +167,8 @@ RUN cd /opt/mgateway \
 RUN updatedb
 
 EXPOSE 8080
+EXPOSE 3000
+EXPOSE 7042
 
 #ENTRYPOINT ["/bin/bash"]
 

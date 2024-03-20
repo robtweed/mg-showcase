@@ -33,6 +33,7 @@ else
 
 fi
 
+redis-server --daemonize yes
 ./nginx start
 
 

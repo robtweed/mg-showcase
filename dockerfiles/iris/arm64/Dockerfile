@@ -1,7 +1,7 @@
 # MGateway Ltd
-# 13 March 2024
+# 20 March 2024
 
-# Version 1.1
+# Version 2.1
 
 FROM containers.intersystems.com/intersystems/iris-community:2023.3-linux-arm64
 
@@ -101,7 +101,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
   && export NVM_DIR="$HOME/.nvm"  >> .bashrc \
   && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  >> .bashrc \
   && nvm install 20 \
-  && npm install qoper8-fastify qoper8-stric glsdb mg-dbx-napi @fastify/static mgw-router json5 \
+  && npm install qoper8-fastify qoper8-stric glsdb mg-dbx-napi @fastify/static mgw-router json5 redis \
   && npm install autocannon -g \
   && cp -r /usr/irissys/dev/nodejs/* node_modules
 
@@ -115,8 +115,17 @@ RUN curl -fsSL https://bun.sh/install | bash \
   && echo "Installed Bun version:" \
   && bun -v
 
-
 USER root
+
+# Install Redis
+
+RUN curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg \
+  && echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/redis.list \
+  && apt update \
+  && apt install -y redis \
+  && redis-server --daemonize yes \
+  && update-rc.d redis-server defaults
+
 
 RUN cd /opt \
   && git clone https://github.com/chrisemunt/mgsi
@@ -125,7 +134,7 @@ RUN cd /opt \
 
 RUN sed -i 's/PasswordHash=/PasswordHash=2d23c9271a8c4cfbf12abb4553be2817d617a457ab8ccbfceba0fb832ef29c67263fd56f0b6c3bea6f14a675cb5daf921d559bcee0d60b5bb17385b5d0c749b7,8b17803718974c72d35b3d4236d418160145b42a8a2725f5c1c2553dc7df01ae54afd8a17fd5f06401bba850577d32cb807e5034f5bbead49be883604b06444e,10000,SHA512/g' /usr/irissys/iris.cpf
 
-RUN sed -i 's?#!/bin/bash?#!/bin/bash\n/home/irisowner/nginx start?' /home/irisowner/irissys/startISCAgent.sh
+RUN sed -i 's?#!/bin/bash?#!/bin/bash\nredis-server --daemonize yes\n/home/irisowner/nginx start?' /home/irisowner/irissys/startISCAgent.sh
 
 RUN rm -r /opt/nginx-1.25.4/ \
   && rm /opt/nginx-1.25.4.tar.gz
@@ -149,6 +158,6 @@ RUN iris start IRIS quietly && \
 
 EXPOSE 8080
 EXPOSE 7042
-
+EXPOSE 3000
 
 

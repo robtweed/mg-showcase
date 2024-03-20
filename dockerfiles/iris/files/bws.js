@@ -1,26 +1,63 @@
-import { Router } from '@stricjs/router';
+import { App, routes } from '@stricjs/app';
+import { html } from '@stricjs/app/send';
 import {QOper8_Plugin} from 'qoper8-stric';
-import { randomUUID } from 'crypto';
-import { createClient } from 'redis';
+import { writeFileSync } from 'fs';
 
-let router =  new Router({port: 3001});
+let prefix = process.env.urlprefix || '';
+let data = 'let urlPrefix = "' + prefix + '"; export {urlPrefix}';
+writeFileSync('/opt/mgateway/www/js/urlprefix.js', data, 'utf8');
+let logging = process.argv[2] || false;
 
-const client = await createClient()
-  .on('error', err => console.log('Redis Client Error', err))
-  .connect();
+let app = new App({
+  serve: {
+    port: 3000,
+    hostname: '0.0.0.0'
+  }
+});
 
+let router = routes();
 
 const options = {
   mode: 'child_process',
-  logging: false,
-  poolSize: 8,
+  logging: logging,
+  poolSize: 2,
   exitOnStop: true,
   workerHandlersByRoute: [
     {
       method: 'get',
-      url: '/uuidYdb',
-      handlerPath: 'uuidYdb.mjs'
-    }
+      url: '/helloworld',
+      handlerPath: 'handlers/getHelloWorld.mjs'
+    },
+    {
+      method: 'post',
+      url: '/user',
+      handlerPath: 'handlers/addUser.mjs'
+    },
+    {
+      method: 'get',
+      url: '/user/:id',
+      handlerPath: 'handlers/getUser.mjs'
+    },
+    {
+      method: 'get',
+      url: '/viewer/globaldirectory',
+      handlerPath: 'handlers/getGlobalDirectory.mjs'
+    },
+    {
+      method: 'get',
+      url: '/viewer/documentNode/:documentName',
+      handlerPath: 'handlers/getDocumentNode.mjs'
+    },
+    {
+      method: 'post',
+      url: '/viewer/getChildNodes',
+      handlerPath: 'handlers/getChildNodes.mjs'
+    },
+    {
+      method: 'post',
+      url: '/benchmark',
+      handlerPath: 'handlers/benchmark.mjs'
+    },
   ],
   mgdbx: {
     open: {
@@ -33,57 +70,19 @@ const options = {
   }
 };
 
-let qoper8 = await QOper8_Plugin(router, options);
+let qoper8 = await QOper8_Plugin(router, options);;
 
-let counts = {};
-
-qoper8.on('workerStarted', function(id) {
-  console.log('worker ' + id + ' started');
-});
-
-qoper8.on('workerStopped', function(id) {
-  console.log('worker ' + id + ' stopped');
-  delete counts[id];
-});
-
-qoper8.on('replyReceived', function(res) {
-  let id = res.workerId;
-  if (!counts[id]) counts[id] = 0;
-  counts[id]++;
-});
-
-let countTimer = setInterval(() => {
-  console.log('messages handled:');
-  for (let id in counts) {
-    console.log(id + ': ' + counts[id]);
+router.get('/*', async (ctx) => {
+  let path = '/opt/mgateway/www/' + ctx.path;
+  try {
+    const page = await Bun.file(path).text();
+    return html(page);
   }
-  console.log('-----');
-}, 20000);
-
-qoper8.on('stop', () => {
-  clearInterval(countTimer);
+  catch(err) {
+    return Response.json({error: 'Unrecognised request'}, {status: 401});
+  }
 });
 
-router.get('/local', (req) => {
-  return Response.json({hello: 'local from Bun.js'});
-});
-
-router.get('/uuid', (req) => {
-  return Response.json({uuid: randomUUID()});
-});
-
-router.get('/uuidRedis', async (req) => {
-
-  let uuid = randomUUID();
-  await client.HSET('redistest', uuid, 'hello world');
-
-  return Response.json({uuid: uuid});
-});
-
-
-router.use(404, (req) => {
-  return Response.json({error: 'Unrecognised request'}, {status: 401});
-});
-
-export default router;
+app.routes.extend(router);
+app.build(true);
 

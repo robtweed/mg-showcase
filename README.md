@@ -39,6 +39,7 @@ database that will be included during the build phase, specifically:
 Each container also includes:
 
 - a pre-installed copy of the NGINX web server;
+- a pre-installed copy of Redis (to allow performance comparisons);
 - a number of useful Linux packages:
 
   - curl
@@ -69,7 +70,7 @@ all of which are ready to run when you start the container:
   - qoper8-cp: queue-based Child Process pool management utility
   - glsdb: abstracting the YottaDB and IRIS databases into persistent JSON/JavaScript Object stores
   - qoper8-fastify: a Fastify Plug-in that integrates qoper8-cp, mg-dbx-napi and glsdb
-  - qoper8-stric: a Stric extension that integrates qoper8-cp and mg-dbx-napi
+  - qoper8-stric: a Stric extension that integrates qoper8-cp, mg-dbx-napi and glsdb
 
   - mg_web: a JavaScript-based interface to YottaDB and IRIS, but integrated directly into NGINX
   - mgw-router: a JavaScript router built on mg_web, offering a high-performance, JavaScript web framework that is built on NGINX - an industrial-strength Web Server rather than a native JavaScript web server (eg Express, Fastify etc)
