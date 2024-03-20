@@ -101,9 +101,9 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
   && export NVM_DIR="$HOME/.nvm"  >> .bashrc \
   && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  >> .bashrc \
   && nvm install 20 \
-  && npm install qoper8-fastify qoper8-stric glsdb mg-dbx-napi @fastify/static mgw-router json5 \
+  && npm install qoper8-fastify qoper8-stric glsdb mg-dbx-napi @fastify/static mgw-router json5 redis \
   && npm install autocannon -g \
-  && cp -r /usr/irissys/dev/nodejs/* node_modules
+  && cp -r /usr/irissys/dev/nodejs/* /home/irisowner/node_modules
 
 # Install Bun.js
 

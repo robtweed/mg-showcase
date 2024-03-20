@@ -5,7 +5,7 @@ import { writeFileSync } from 'fs';
 
 let prefix = process.env.urlprefix || '';
 let data = 'let urlPrefix = "' + prefix + '"; export {urlPrefix}';
-writeFileSync('/opt/mgateway/www/js/urlprefix.js', data, 'utf8');
+writeFileSync('/home/irisowner/www/js/urlprefix.js', data, 'utf8');
 let logging = process.argv[2] || false;
 
 let app = new App({
@@ -73,7 +73,7 @@ const options = {
 let qoper8 = await QOper8_Plugin(router, options);;
 
 router.get('/*', async (ctx) => {
-  let path = '/opt/mgateway/www/' + ctx.path;
+  let path = '/home/irisowner/www/' + ctx.path;
   try {
     const page = await Bun.file(path).text();
     return html(page);

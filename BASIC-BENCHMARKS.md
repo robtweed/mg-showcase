@@ -409,11 +409,11 @@ The most commonly-used database used with Node.js for high-performance storage a
 
 So how does it compare with YottaDB and IRIS?
 
-To answer that, you'll find that the Container includes a pre-installed copy of Redis and the standard *redis* interface package for Node.js.  We've also included a benchmark test that closely matches the key/value storage used in the YottaDB and IRIS benchmark tests.  You can [find the file here](./dockerfiles/files/benchmark_redis.js)
+To answer that, you'll find that the Container includes a pre-installed copy of Redis and the standard *redis* interface package for Node.js.  We've also included a benchmark test that closely matches the key/value storage used in the YottaDB and IRIS benchmark tests.  You can [find the file here](./dockerfiles/files/benchmark_redis.mjs)
  in the repo and you'll also find it in your running Container's default directory:
 
-- YottaDB: /opt/mgateway/benchmark_redis.js
-- IRIS: /home/irisowner/benchmark_redis.js
+- YottaDB: /opt/mgateway/benchmark_redis.mjs
+- IRIS: /home/irisowner/benchmark_redis.mjs
 
 Here's our results when run on the exact same hardware as the *mg-dbx-napi* tests above:
 
@@ -467,10 +467,11 @@ Here's our results when run on the exact same hardware as the *mg-dbx-napi* test
 
 You can see that the performance of YottaDB and IRIS using our *mg-dbx-napi* interface is orders of magnitude higher than using Redis.
 
-Redis, of course, uses a networked interface, and one trick it has up its sleeve is pipelining to improve performance.  You'll find another test for Redis using a pipelined connection: look for:
+Redis, of course, uses a networked interface, and one trick it has up its sleeve is pipelining to improve performance.  You'll [find another test](./dockerfiles/files/benchmark_redis_pl.mjs) 
+for Redis using a pipelined connection: look for:
 
-- YottaDB: /opt/mgateway/benchmark_redis_pl.js
-- IRIS: /home/irisowner/benchmark_redis_pl.js
+- YottaDB: /opt/mgateway/benchmark_redis_pl.mjs
+- IRIS: /home/irisowner/benchmark_redis_pl.mjs
 
 Here's the results running in on our ARM64 M1 Mac Mini:
 

@@ -5,14 +5,14 @@ import { writeFileSync } from 'fs';
 
 let prefix = process.env.urlprefix || '';
 let data = 'let urlPrefix = "' + prefix + '"; export {urlPrefix}';
-writeFileSync('/opt/mgateway/www/js/urlprefix.js', data, 'utf8');
+writeFileSync('/home/irisowner/www/js/urlprefix.js', data, 'utf8');
 
 const fastify = Fastify({
   logger: false
 });
 
 fastify.register(fastifyStatic, {
-  root: '/opt/mgateway/www',
+  root: '/home/irisowner/www',
   prefix: '/',
   maxAge: '23h'
 });
