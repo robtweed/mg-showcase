@@ -2,10 +2,9 @@
 # 25 March 2024
 
 # Version 2.2
+FROM debian:bookworm
 
 RUN echo "Building mg-showcase Container Version 2.2"
-
-FROM debian:bookworm
 
 ARG DEBIAN_FRONTEND=noninteractive
 

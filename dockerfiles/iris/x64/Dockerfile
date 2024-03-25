@@ -3,9 +3,9 @@
 
 # Version 2.2
 
-RUN echo "Building mg-showcase Container Version 2.2"
-
 FROM containers.intersystems.com/intersystems/iris-community:2023.3
+
+RUN echo "Building mg-showcase Container Version 2.2"
 
 USER root
 
