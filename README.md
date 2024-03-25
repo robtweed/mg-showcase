@@ -10,7 +10,7 @@ Google Group for discussions, support, advice etc: [http://groups.google.co.uk/g
 
 ## Version
 
-This is version 1.1 of the *mg-showcase* repository and Containers
+This is version 2.2 of the *mg-showcase* repository and Containers, released on 25 March 2024.
 
 ## Background
 
@@ -54,7 +54,6 @@ Each container also includes:
 - a number of pre-installed JavaScript packages including:
 
   - Fastify (a high-performance web server platform designed for Node.js)
-  - Stric (a high-performance web server specifically for Bun.js)
   - json5 (for parsing JavaScript string literals and JSON)
   - autocannon (benchmarking/performance tool)
 
@@ -70,7 +69,7 @@ all of which are ready to run when you start the container:
   - qoper8-cp: queue-based Child Process pool management utility
   - glsdb: abstracting the YottaDB and IRIS databases into persistent JSON/JavaScript Object stores
   - qoper8-fastify: a Fastify Plug-in that integrates qoper8-cp, mg-dbx-napi and glsdb
-  - qoper8-stric: a Stric extension that integrates qoper8-cp, mg-dbx-napi and glsdb
+  - mg-bun-router: a router for Bun.serve that also integrates qoper8-cp, mg-dbx-napi and glsdb
 
   - mg_web: a JavaScript-based interface to YottaDB and IRIS, but integrated directly into NGINX
   - mgw-router: a JavaScript router built on mg_web, offering a high-performance, JavaScript web framework that is built on NGINX - an industrial-strength Web Server rather than a native JavaScript web server (eg Express, Fastify etc)

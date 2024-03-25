@@ -1,7 +1,9 @@
 # MGateway Ltd
-# 20 March 2024
+# 25 March 2024
 
-# Version 2.1
+# Version 2.2
+
+RUN echo "Building mg-showcase Container Version 2.2"
 
 FROM debian:bookworm
 
@@ -102,7 +104,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
   && export NVM_DIR="$HOME/.nvm" \
   && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
   && nvm install 20 \
-  && npm install qoper8-fastify qoper8-stric glsdb mg-dbx-napi @fastify/static mgw-router json5 redis \
+  && npm install qoper8-fastify mg-bun-router glsdb mg-dbx-napi @fastify/static mgw-router json5 redis \
   && npm install autocannon -g
 
 # Install Bun

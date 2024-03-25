@@ -28,6 +28,25 @@
 
     golgi.logging = true;
     let rootComponent = await golgi.renderAssembly('root_assembly', 'body', context);
+
+    // pre-load components that are needed later while things are quiet...
+
+    setTimeout(async function() {
+      let arr = ['sbadmin-content-page', 'sbadmin-spacer', 'sbadmin-card', 'sbadmin-card-header', 'sbadmin-card-body', 'sbadmin-card-text', 'sbadmin-form', 'sbadmin-input', 'sbadmin-textarea', 'sbadmin-button', 'sbadmin-modal', 'sbadmin-table', 'sbadmin-toast'];
+      for (let name of arr) {
+        let _module = await import(context.componentPaths.sbadmin + name + '.js');
+        _module.load();
+      }
+    }, 500);
+
+    setTimeout(async function() {
+      let arr = ['d3-hierarchy-root', 'd3-node-box', 'd3-node-text', 'd3-child-node-button', 'd3-action-button', 'd3-link'];
+      for (let name of arr) {
+        let _module = await import(context.componentPaths.d3 + name + '.js');
+        _module.load();
+      }
+    }, 1000);
+
   }
 
   document.addEventListener('DOMContentLoaded', function() {
