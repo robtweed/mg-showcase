@@ -15,17 +15,24 @@ This web application makes use of our [*glsdb* abstraction of Global Storage](ht
 
 Since the benchmark application is a web application, you need to start a web server on your Container, and that web server needs access to the front-end UI logic needed by your browser, as well as the back-end logic that does the actual saving and retrieving of your JSON object to/from the Container's installed database.
 
-We've included such a pre-built web server in each *mg-showcase* Container.  It uses the Node.js 
-[Fastify](https://fastify.dev/) web framework and our 
+We've included two versions of such a pre-built web server in each *mg-showcase* Container:
+
+- the first is for use with Node.js and uses the [Fastify](https://fastify.dev/) web framework and our 
 [QOper8](https://github.com/robtweed/qoper8-cp) package, along with our 
-[qoper8-fastify](https://github.com/robtweed/qoper8-fastify) plug-in package for Fastify.  
+[qoper8-fastify](https://github.com/robtweed/qoper8-fastify) plug-in package for Fastify.
 
-QOper8 is needed to allow the synchronous *mg-dbx-napi* interface calls to work cleanly in the otherwise single-threaded multi-concurrency run-time environment of Node.js
+- the second is for use with Bun.jx and uses Bun.serve along with our 
+[*mg-bun-router*]() Router which also integrates QOper8
 
-You can take a look at the source code for the web server:
+QOper8 is needed to allow the synchronous *mg-dbx-napi* interface calls to work cleanly in the otherwise single-threaded multi-concurrency run-time environment of Node.js.  QOper8 integrates both the *mg-dbx-napi* interface and our [*glsdb*](https://github.com/robtweed/glsdb) abstraction of YottaDB and IRIS data storage.
 
-- [YottaDB](./dockerfiles/yottadb/files/nws.mjs)
-- [IRIS](./dockerfiles/iris/files/nws.mjs)
+
+You can take a look at the source code for the two web servers:
+
+- [Node.js/Fastify version for YottaDB](./dockerfiles/yottadb/files/nws.mjs)
+- [Bun.js version for YottaDB](./dockerfiles/yottadb/files/bws.mjs)
+- [Node.js/Fastify version for IRIS](./dockerfiles/iris/files/nws.mjs)
+- [Bun.js version for IRIS](./dockerfiles/iris/files/bws.mjs)
 
 If you're interested in how *glsdb* is used within the application's benchmark API handler module, you can 
 [view the source code for the modules here](./dockerfiles/files/handlers/benchmark.mjs).  Here's the key lines to look for:
@@ -48,7 +55,13 @@ If you're interested in how *glsdb* is used within the application's benchmark A
 
 - start the Web Server.  It's a good idea to add the optional command-line parameter (*true*) which enables logging, so you'll be able to see the web server in action:
 
+- Node.js:
+
         node nws.mjs true
+
+- Bun.js:
+
+        bun bws.js true
 
 You should see something like this:
 
@@ -57,6 +70,8 @@ You should see something like this:
         Max Child Process Worker Pool Size: 2
         ========================================================
 
+
+Both versions of the Web Server will now function identically.
 
 The Web Server is now running and listening on port 3000.  Assuming you mapped port 3000 when you started the Container, you should be able to access it externally using a browser, eg:
 
@@ -268,4 +283,9 @@ You'll begin to understand why this is the case if you examine how this JSON obj
 So each record requires not only 5 individual database records for its storage, but some also require more keys/subscripts.
 
 Now try your own examples and explore the performance of these databases for storing and retrieving JSON documents.
+
+
+## Node.js/Fastify versus Bun.serve Performance
+
+You can try for yourself to see if there are any differences in performance between running the Node.js/Fastify (nws.mjs) and Bun.serve (bws.js) versions of the Web Server when writing and reading persistent JSON objects using the same Container and the same database.
 

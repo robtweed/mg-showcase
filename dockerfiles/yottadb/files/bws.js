@@ -1,6 +1,4 @@
-import { App, routes } from '@stricjs/app';
-import { html } from '@stricjs/app/send';
-import {QOper8_Plugin} from 'qoper8-stric';
+import {Router} from 'mg-bun-router';
 import { writeFileSync } from 'fs';
 
 let prefix = process.env.urlprefix || '';
@@ -8,20 +6,8 @@ let data = 'let urlPrefix = "' + prefix + '"; export {urlPrefix}';
 writeFileSync('/opt/mgateway/www/js/urlprefix.js', data, 'utf8');
 let logging = process.argv[2] || false;
 
-let app = new App({
-  serve: {
-    port: 3000,
-    hostname: '0.0.0.0'
-  }
-});
-
-let router = routes();
-
-const options = {
-  mode: 'child_process',
+let router = new Router({
   logging: logging,
-  poolSize: 2,
-  exitOnStop: true,
   workerHandlersByRoute: [
     {
       method: 'get',
@@ -71,21 +57,14 @@ const options = {
       }
     }
   }
-};
-
-let qoper8 = await QOper8_Plugin(router, options);;
-
-router.get('/*', async (ctx) => {
-  let path = '/opt/mgateway/www/' + ctx.path;
-  try {
-    const page = await Bun.file(path).text();
-    return html(page);
-  }
-  catch(err) {
-    return Response.json({error: 'Unrecognised request'}, {status: 401});
-  }
 });
 
-app.routes.extend(router);
-app.build(true);
+router.static('/opt/mgateway/www/');
+
+Bun.serve({
+  port: 3000,
+  async fetch(Req) {
+    return await router.useRoutes(Req);
+  }
+});
 
