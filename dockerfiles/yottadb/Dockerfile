@@ -1,10 +1,10 @@
 # MGateway Ltd
-# 25 March 2024
+# 26 March 2024
 
-# Version 2.2
+# Version 2.3
 FROM debian:bookworm
 
-RUN echo "Building mg-showcase Container Version 2.2"
+RUN echo "Building mg-showcase Container Version 2.3"
 
 ARG DEBIAN_FRONTEND=noninteractive
 

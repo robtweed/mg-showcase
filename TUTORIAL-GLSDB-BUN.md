@@ -1,8 +1,8 @@
-# Using *glsdb* with Fastify
+# Using *glsdb* with Bun.js
 
 ## Introduction
 
-In the previous [tutorial document](./TUTORIAL-MGDBX-FASTIFY.md) we looked at how you can use the YottaDB and IRIS databases via the extremely high-performance *mg-dbx-napi* APIs within a Node.js / Fastify-based back-end.
+In the previous [tutorial document](./TUTORIAL-MGDBX-BUN.md) we looked at how you can use the YottaDB and IRIS databases via the extremely high-performance *mg-dbx-napi* APIs within a Bun.serve-based back-end.
 
 This tutorial builds on that document, but focuses instead on the use of the higher-level abstraction of the YottaDB and IRIS databases provided by our [*glsdb*](https://github.com/robtweed/glsdb) technology.
 
@@ -10,22 +10,15 @@ This tutorial builds on that document, but focuses instead on the use of the hig
 
 ## Getting Started
 
-We can make use of the same Fastify script that we created in the previous tutorial:
+We can make use of the same Bun.serve script that we created in the previous tutorial:
 
 - YottaDB:
 
-        import Fastify from 'fastify';
-        import QOper8 from 'qoper8-fastify';
-
-        const fastify = Fastify({
-          logger: true
-        });
+        import {Router} from 'mg-bun-router';
 
         const options = {
-          mode: 'child_process',
           logging: true,
           poolSize: 2,
-          exitOnStop: true,
           mgdbx: {
             open: {
               type: "YottaDB",
@@ -47,52 +40,33 @@ We can make use of the same Fastify script that we created in the previous tutor
               method: 'post',
               url: '/user',
               handlerPath: 'createUser.mjs'
-            },
-            {
-              method: 'get',
-              url: '/user/:id',
-              handlerPath: 'getUser.mjs'
             }
           ]
         };
 
-        fastify.register(QOper8, options);
+        let router = new Router(options);
 
-        fastify.get('/local', function (req, reply) {
-          reply.send({
-            api: '/local',
-            ok: true,
-            from: 'Fastify'
-          });
+        router.get('/local', (req) => {
+          return Response.json({hello: 'handled by Bun'});
         });
 
-        fastify.setNotFoundHandler((request, reply) => {
-          let error = {error: 'Not found: ' + request.url};
-          reply.code(404).type('application/json').send(JSON.stringify(error));
-        });
+        router.invalid();
 
-        await fastify.listen({ port: 3000, host: '0.0.0.0' }, function (err, address) {
-          if (err) {
-            fastify.log.error(err)
-            process.exit(1)
+        Bun.serve({
+          port: 3000,
+          async fetch(Req) {
+            return await router.useRoutes(Req);
           }
         });
 
 
 - IRIS:
 
-        import Fastify from 'fastify';
-        import QOper8 from 'qoper8-fastify';
-
-        const fastify = Fastify({
-          logger: true
-        });
+        import {Router} from 'mg-bun-router';
 
         const options = {
-          mode: 'child_process',
           logging: true,
           poolSize: 2,
-          exitOnStop: true,
           mgdbx: {
             open: {
               type: "IRIS",
@@ -112,40 +86,27 @@ We can make use of the same Fastify script that we created in the previous tutor
               method: 'post',
               url: '/user',
               handlerPath: 'createUser.mjs'
-            },
-            {
-              method: 'get',
-              url: '/user/:id',
-              handlerPath: 'getUser.mjs'
             }
           ]
         };
 
-        fastify.register(QOper8, options);
+        let router = new Router(options);
 
-        fastify.get('/local', function (req, reply) {
-          reply.send({
-            api: '/local',
-            ok: true,
-            from: 'Fastify'
-          });
+        router.get('/local', (req) => {
+          return Response.json({hello: 'handled by Bun'});
         });
 
-        fastify.setNotFoundHandler((request, reply) => {
-          let error = {error: 'Not found: ' + request.url};
-          reply.code(404).type('application/json').send(JSON.stringify(error));
-        });
+        router.invalid();
 
-        await fastify.listen({ port: 3000, host: '0.0.0.0' }, function (err, address) {
-          if (err) {
-            fastify.log.error(err)
-            process.exit(1)
+        Bun.serve({
+          port: 3000,
+          async fetch(Req) {
+            return await router.useRoutes(Req);
           }
         });
 
 
-Note that these two versions of *fastify.mjs* are identical apart from the *options.mgdbx.open* credentials.
-
+Note that these two versions of *bunserve.js* are identical apart from the *options.mgdbx.open* credentials.
 
 Since all the actual database access occurs within QOper8 Worker Handler modules, we simply need to change the two module files: *createUser.mjs* and *getUser.mjs*.
 
@@ -224,7 +185,7 @@ You can hopefully see in this module how much more succinct the *glsdb* syntax i
 
 ### Try it Out
 
-Stop and restart the Fastify script, and then try our new *glsdb*-based *POST /user* API, eg:
+Stop and restart the Bun.serve script, and then try our new *glsdb*-based version of the *POST /user* API, eg:
 
         curl -v -X POST -H "Content-Type: application/json" -d "{\"firstName\": \"Rob\", \"lastName\": \"Tweed\"}" http://localhost:3000/user
 
@@ -251,7 +212,7 @@ You should get the same response as before:
 Once again you can find out the full details of this 
 [Proxy-based abstraction here](https://github.com/robtweed/glsdb#the-global-storage-proxy-api)
 
-For now we'll just modify our example *createUser.mjs* and *getUser.mjs* module files to get you started on how to use this abstraction within a Fastify back-end.
+For now we'll just modify our example *createUser.mjs* and *getUser.mjs* module files to get you started on how to use this abstraction within a Bun.serve back-end.
 
 ### createUser.mjs
 
@@ -310,12 +271,10 @@ For now we'll just modify our example *createUser.mjs* and *getUser.mjs* module 
 
 ### Try it Out
 
-Stop and restart the Fastify script, and then try the POST /user and GET /user:id APIs again.  They should behave identically, but this time you're using the much higher-level *glsdb* proxy abstraction.
+Stop and restart the Bun.serve script, and then try the POST /user and GET /user:id APIs again.  They should behave identically, but this time you're using the much higher-level *glsdb* proxy abstraction.
 
 As you can see from the examples above, the *glsdb* proxy objects are barely distinguisable from in-memory JavaScript objects in terms of their behaviour and the syntax you use with them, but if you check in the YottaDB or IRIS database, you will see that they are, indeed, accessing on-disk data!
 
 You are now invited to try creating your own, more complex, QOper8 Worker Handler Modules, making use of some more of the *glsdb* functionality.
-
-
 
 ----

@@ -1,11 +1,11 @@
 # MGateway Ltd
-# 25 March 2024
+# 26 March 2024
 
-# Version 2.2
+# Version 2.3
 
 FROM containers.intersystems.com/intersystems/iris-community:2023.3-linux-arm64
 
-RUN echo "Building mg-showcase Container Version 2.2"
+RUN echo "Building mg-showcase Container Version 2.3"
 
 USER root
 
