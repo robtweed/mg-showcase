@@ -289,3 +289,5 @@ Now try your own examples and explore the performance of these databases for sto
 
 You can try for yourself to see if there are any differences in performance between running the Node.js/Fastify (nws.mjs) and Bun.serve (bws.js) versions of the Web Server when writing and reading persistent JSON objects using the same Container and the same database.
 
+In our tests, we've consistently found that Bun not only serves up pages to a browser faster than Node.js + Fastify, but it also writes and reads persistent JSON documents to YottaDB and IRIS faster too.
+

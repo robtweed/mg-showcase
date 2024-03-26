@@ -89,6 +89,7 @@ all of which are ready to run when you start the container:
 - Tutorials
   - [Getting Started with the mg-dbx-napi Interface](./TUTORIAL-MGDBX.md)
   - [Using the mg-dbx-napi Interface with Fastify](./TUTORIAL-MGDBX-FASTIFY.md)
+  - [Using *glsdb* with Fastify](./TUTORIAL-GLSDB-FASTIFY.md)
 
 ... more to follow
 
