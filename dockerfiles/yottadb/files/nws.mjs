@@ -17,12 +17,13 @@ fastify.register(fastifyStatic, {
   maxAge: '23h'
 });
 
-let logging = process.argv[2] || false;
+let logging = (process.argv[2] === 'true') || false;
+let poolSize = process.argv[3] || 2;
 
 const options = {
   mode: 'child_process',
   logging: logging,
-  poolSize: 2,
+  poolSize: poolSize,
   exitOnStop: true,
   mgdbx: {
     open: {
@@ -78,9 +79,8 @@ fastify.register(QOper8, options);
 
 fastify.get('/local', function (req, reply) {
   reply.send({
-    api: '/local',
     ok: true,
-    from: 'Fastify'
+    hello: 'from Fastify'
   });
 });
 

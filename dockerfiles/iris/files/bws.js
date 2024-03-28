@@ -4,10 +4,12 @@ import { writeFileSync } from 'fs';
 let prefix = process.env.urlprefix || '';
 let data = 'let urlPrefix = "' + prefix + '"; export {urlPrefix}';
 writeFileSync('/home/irisowner/www/js/urlprefix.js', data, 'utf8');
-let logging = process.argv[2] || false;
+let logging = (process.argv[2] === 'true') || false;
+let poolSize = process.argv[3] || 2;
 
 let router = new Router({
   logging: logging,
+  poolSize: poolSize,
   workerHandlersByRoute: [
     {
       method: 'get',
@@ -54,6 +56,13 @@ let router = new Router({
       namespace: "USER"
     }
   }
+});
+
+router.get('/local', (req) => {
+  return Response.json({
+    ok: true,
+    hello: 'from Bun.serve'
+  });
 });
 
 router.static('/home/irisowner/www/');

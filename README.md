@@ -10,7 +10,7 @@ Google Group for discussions, support, advice etc: [http://groups.google.co.uk/g
 
 ## Version
 
-This is version 2.3 of the *mg-showcase* repository and Containers, released on 26 March 2024.
+This is version 2.4 of the *mg-showcase* repository and Containers, released on 28 March 2024.
 
 ## Background
 
@@ -94,6 +94,7 @@ all of which are ready to run when you start the container:
   - Bun.js & Bun.serve
     - [Using the mg-dbx-napi Interface with Bun.serve](./TUTORIAL-MGDBX-BUN.md)
     - [Using *glsdb* with Bun.serve](./TUTORIAL-GLSDB-BUN.md)
+  - [Benchmarking QOper8](./QOPER8-BENCHMARKS.md)
 
 ... more to follow
 
