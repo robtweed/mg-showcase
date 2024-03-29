@@ -21,8 +21,10 @@ the *sudo* prefix before the *docker* command.
 
 To avoid this, you can do the following:
 
-        sudo usermod -aG docker ${USER}
-        su - ${USER}
+```console
+sudo usermod -aG docker ${USER}
+su - ${USER}
+```
         
   NB: You'll be asked to enter your user's password
 
@@ -34,8 +36,10 @@ Now you can simply use the *docker* command.
 You'll need to ensure that you can clone this Github Repository to your host machine, so make sure
 you have installed *git*.  If not, on Linux systems:
 
-        sudo apt-get update
-        sudo apt-get install -y git
+```console
+sudo apt-get update
+sudo apt-get install -y git
+```
 
 (or the equivalent for your Linux distribution or operating system)
 
@@ -48,9 +52,10 @@ I'll assume you'll use your host system's home directory, eg */home/ubuntu*.
 
 Then clone this Repository, eg:
 
-        cd ~
-        git clone https://github.com/robtweed/mg-showcase
-
+```console
+cd ~
+git clone https://github.com/robtweed/mg-showcase
+```
 
 On completion, you'll find that you have a directory named *~/mg-showcase*
 containing a copy of this Repository.
@@ -105,23 +110,31 @@ Before building the containers, first ensure that you are in the root directory 
 
 For example, if you cloned the *mg-showcase* repository to your root folder:
 
-        cd ~/mg-showcase
+```console
+cd ~/mg-showcase
+```
 
 To build the Container:
 
-        docker build -t mg-showcase -f dockerfiles/yottadb/Dockerfile .
+```console
+docker build -t mg-showcase -f dockerfiles/yottadb/Dockerfile .
+```
 
 Feel free to change the container name to something other than *mg-showcase*.  However, our examples and documentation will assume you've used this name.
 
 Note: if you're upgrading the Container to a later release version, it's a good idea to disable the Docker build cache and force a complete rebuild, eg:
 
-        docker build --no-cache -t mg-showcase -f dockerfiles/yottadb/Dockerfile .
+```console
+docker build --no-cache -t mg-showcase -f dockerfiles/yottadb/Dockerfile .
+```
 
 ## Running the Container
 
 To start the Container:
 
-        docker run -it --name mg-showcase --rm -p 8080:8080 -p 3000:3000 -p 7042:7042 -v ~/yottadb-vol:/opt/mgateway/mapped mg-showcase
+```console
+docker run -it --name mg-showcase --rm -p 8080:8080 -p 3000:3000 -p 7042:7042 -v ~/yottadb-vol:/opt/mgateway/mapped mg-showcase
+```
 
 ### Notes
 
@@ -166,11 +179,15 @@ Before building the containers, first ensure that you are in the root directory 
 
 For example, if you cloned the *mg-showcase* repository to your root folder:
 
-        cd ~/mg-showcase
+```console
+cd ~/mg-showcase
+```
 
 To build the Container:
 
-        docker build -t mg-showcase -f dockerfiles/iris/x64/Dockerfile .
+```console
+docker build -t mg-showcase -f dockerfiles/iris/x64/Dockerfile .
+```
 
 Feel free to change the container name to something other than *mg-showcase*.  However, our examples and documentation will assume you've used this name.
 
@@ -178,13 +195,17 @@ Note 1: you'll experience a delay towards the end of the build whilst some IRIS 
 
 Note 2: if you're upgrading the Container to a later release version, it's a good idea to disable the Docker build cache and force a complete rebuild, eg:
 
-        docker build --no-cache -t mg-showcase -f dockerfiles/iris/x64/Dockerfile .
+```console
+docker build --no-cache -t mg-showcase -f dockerfiles/iris/x64/Dockerfile .
+```
 
 ## Running the Container
 
 To start the Container:
 
-        docker run -it --name mg-showcase -it --rm -p 1972:1972 -p 52773:52773 -p 51773:51773 -p 7042:7042 -p 8080:8080 -p 3000:3000 -v ~/iris-vol:/home/irisowner/mapped mg-showcase --check-caps false
+```console
+docker run -it --name mg-showcase -it --rm -p 1972:1972 -p 52773:52773 -p 51773:51773 -p 7042:7042 -p 8080:8080 -p 3000:3000 -v ~/iris-vol:/home/irisowner/mapped mg-showcase --check-caps false
+```
 
 ### Notes
 
@@ -232,11 +253,15 @@ Before building the containers, first ensure that you are in the root directory 
 
 For example, if you cloned the *mg-showcase* repository to your root folder:
 
-        cd ~/mg-showcase
+```console
+cd ~/mg-showcase
+```
 
 To build the Container:
 
-        docker build -t mg-showcase -f dockerfiles/iris/arm64/Dockerfile .
+```console
+docker build -t mg-showcase -f dockerfiles/iris/arm64/Dockerfile .
+```
 
 Feel free to change the container name to something other than *mg-showcase*.  However, our examples and documentation will assume you've used this name.
 
@@ -244,13 +269,17 @@ Note 1: you'll experience a delay towards the end of the build whilst some IRIS 
 
 Note 2: if you're upgrading the Container to a later release version, it's a good idea to disable the Docker build cache and force a complete rebuild, eg:
 
-        docker build --no-cache -t mg-showcase -f dockerfiles/iris/arm64/Dockerfile .
+```console
+docker build --no-cache -t mg-showcase -f dockerfiles/iris/arm64/Dockerfile .
+```
 
 ## Running the Container
 
 To start the Container:
 
-        docker run -it --name mg-showcase -it --rm -p 1972:1972 -p 52773:52773 -p 51773:51773 -p 7042:7042 -p 8080:8080 -p 3000:3000 -v ~/iris-vol:/home/irisowner/mapped mg-showcase --check-caps false
+```console
+docker run -it --name mg-showcase -it --rm -p 1972:1972 -p 52773:52773 -p 51773:51773 -p 7042:7042 -p 8080:8080 -p 3000:3000 -v ~/iris-vol:/home/irisowner/mapped mg-showcase --check-caps false
+```
 
 ### Notes
 
@@ -295,6 +324,3 @@ To add persistence, you should follow the
 You now have a running showcase system, complete with the database of your choice.
 
 Go back to the main [README document](https://github.com/robtweed/mg-showcase?tab=readme-ov-file#further-reading) and consult the other documents in this repository to discover what you can now try out and do with your Container.
-
-
-

@@ -48,12 +48,15 @@ Global Storage key/value pairs via the *mg-dbx-napi* interface.
 
   - Node.js:
 
-        node bm_mgdbxnapi.mjs 1000
+```console
+node bm_mgdbxnapi.mjs 1000
+```
 
   - Bun.js:
 
-        bun bm_mgdbxnapi.mjs 1000
-
+```console
+bun bm_mgdbxnapi.mjs 1000
+```
 
 ## Example Results
 
@@ -194,17 +197,17 @@ Let's summarise these results in two tables:
 |--------------|----------|--------|
 |Node.js Write |52,631    |38,461  |
 |Bun.js  Write |50,000    |58,823  |
-|--------------|----------|--------|
+|    &nbsp;    |          |        |
 |Node.js Read  |125,000   |142,857 |
 |Bun.js  Read  |166,666   |166,666 |
 
-
+&nbsp;
 
 |     ARM64    | YottaDB  | IRIS    |
 |--------------|----------|---------|
 |Node.js Write |142,857   |142,857  |
 |Bun.js  Write |250,000   |333,000  |
-|--------------|----------|---------|
+|   &nbsp;     |          |         |
 |Node.js Read  |500,000   |500,000  |
 |Bun.js  Read  |500,000   |1,000,000|
 
@@ -233,11 +236,15 @@ Next we'll increase the number of key/value pairs generated and read and see if 
 
   - Node.js:
 
-        node bm_mgdbxnapi.mjs 1000000
+```console
+node bm_mgdbxnapi.mjs 1000000
+````
 
   - Bun.js:
 
-        bun bm_mgdbxnapi.mjs 1000000
+```console
+bun bm_mgdbxnapi.mjs 1000000
+```
 
 ## Example Results
 
@@ -377,19 +384,21 @@ Let's summarise these results in two tables:
 |--------------|----------|--------|
 |Node.js Write |251,319   |245,579 |
 |Bun.js  Write |262,950   |268,961 |
-|--------------|----------|--------|
+|  &nbsp;      |          |        |
 |Node.js Read  |417,536   |326,904 |
 |Bun.js  Read  |423,011   |334,112 |
 
-
+        
+&nbsp;
 
 |     ARM64    | YottaDB  | IRIS     |
 |--------------|----------|----------|
 |Node.js Write |1,510,574 |1,111,111 |
 |Bun.js  Write |1,373,626 |1,145,475 |
-|--------------|----------|----------|
+|  &nbsp;      |          |          |
 |Node.js Read  |2,309,468 |1,862,127 |
 |Bun.js  Read  |2,036,659 |1,675,041 |
+
 
 Now we can begin to get a proper impression of just how fast these two databases are, and how fast a connection our *mg-dbx-napi* interface gives you.  
 

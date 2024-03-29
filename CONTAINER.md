@@ -22,7 +22,9 @@ However, you can also make use of our Containers as a run-time environment for y
 
 To start a shell process within any of the Containers:
 
-      docker exec -it mg-showcase bash
+```console
+docker exec -it mg-showcase bash
+```
 
 - Note: change *mg-showcase* appropriately if you used a different name for the Container when you started it
 
@@ -35,8 +37,9 @@ You'll be placed in the working directory:
 
 To exit the shell process and return to the host:
 
-      exit
-
+```console
+exit
+```
 
 ## Stopping the Containers
 
@@ -49,12 +52,16 @@ correct working directory (*/opt/mgateway*)
 
 Then type:
 
-        ./stop_ydb
+```console
+./stop_ydb
+```
 
 
 You can now exit the shell process and stop the Container from a host process:
 
-        docker stop mg-showcase
+```console
+docker stop mg-showcase
+```
 
 ----
 
@@ -64,7 +71,9 @@ The IRIS containers automatically clean up any open database connections before 
 
 You can therefore simply stop your IRIS Container from a host process using:
 
-        docker stop mg-showcase
+```console
+docker stop mg-showcase
+```
 
 
 ----

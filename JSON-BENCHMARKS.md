@@ -37,16 +37,20 @@ You can take a look at the source code for the two web servers:
 If you're interested in how *glsdb* is used within the application's benchmark API handler module, you can 
 [view the source code for the modules here](./dockerfiles/files/handlers/benchmark.mjs).  Here's the key lines to look for:
 
-        for (let key = 1; key < max; key++) {
-          doc.$(key).document = json;
-        }
+```javascript
+for (let key = 1; key < max; key++) {
+  doc.$(key).document = json;
+}
+```
 
 
 ## Getting Started
 
 - Shell into the Container, eg:
 
-        docker exec -it mg-showcase bash
+```console
+docker exec -it mg-showcase bash
+```
 
 - make sure you're in the Container's default directory:
 
@@ -57,11 +61,15 @@ If you're interested in how *glsdb* is used within the application's benchmark A
 
 - Node.js:
 
-        node nws.mjs true
+```console
+node nws.mjs true
+```
 
 - Bun.js:
 
-        bun bws.js true
+```console
+bun bws.js true
+```
 
 You should see something like this:
 
@@ -75,7 +83,9 @@ Both versions of the Web Server will now function identically.
 
 The Web Server is now running and listening on port 3000.  Assuming you mapped port 3000 when you started the Container, you should be able to access it externally using a browser, eg:
 
-        http://192.168.1.100:3000
+```console
+http://192.168.1.100:3000
+```
 
 and you should see a page that looks like this:
 
@@ -94,7 +104,9 @@ The JSON can be specified formally and "correctly" using double-quoted names and
 
 So, for example, copy and paste this example into the JSON textarea form field:
 
-        {hello: 'world'}
+```javascript
+{hello: 'world'}
+```
 
 Hit the *Go!* button at the bottom-right of the form, and you should see a pop-up appear that looks something like this:
 
@@ -252,15 +264,17 @@ Reading the JSON objects back is slower, at around 160,000/sec when using the *n
 Now try a more complex JSON document, for example:
 
 
-        {
-          name: 'Rob Tweed',
-          address: {
-            houseNo: 9,
-            city: 'Redhill',
-            county: 'Surrey'
-          },
-          telephone: '0790123456'
-        }
+```javascript
+{
+  name: 'Rob Tweed',
+  address: {
+    houseNo: 9,
+    city: 'Redhill',
+    county: 'Surrey'
+  },
+  telephone: '0790123456'
+}
+```
 
 and we'll create 10,000 records with this object.
 

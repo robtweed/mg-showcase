@@ -36,7 +36,9 @@ To get a list of the Global Storage Documents that exist in your database:
 
 - Then run the command:
 
-        ./gd
+```console
+./gd
+```
 
 It's named this as it's short for Global Directory.
 
@@ -165,7 +167,9 @@ First you need to start the interactive shell.
 
 - now type the command:
 
-        ./ydb
+```console
+./ydb
+```
 
   You should see:
 
@@ -180,7 +184,9 @@ First you need to start the interactive shell.
 
 To list all Global Documents in the database, at the *YDB>* prompt, type:
 
-        d ^%GD
+```console
+d ^%GD
+```
 
 You should see:
 
@@ -204,7 +210,9 @@ The simplest way to list an individual YottaDB Global Document is to use the *zw
 
 At the *YDB>* prompt, type:
 
-        zwr ^ydbtest
+```console
+zwr ^ydbtest
+```
 
 Note that you need to add the *caret* (^) symbol before the name, eg:
 
@@ -233,7 +241,9 @@ First you need to start the interactive shell.  You can start this from any dire
 
 - Type the command:
 
-        iris terminal IRIS
+```console
+iris terminal IRIS
+```
 
   You should see:
 
@@ -250,7 +260,9 @@ This is because by default you'll shell into the *USER* namespace.
 
 To list all Global Documents in the database, at the *YDB>* prompt, type:
 
-        d ^%GD
+```console
+d ^%GD
+```
 
 You'll see the following prompts.  Just hit the *Enter* key to accept the default for each one:
 
@@ -283,7 +295,9 @@ The simplest way to list an individual YottaDB Global Document is to use the *zw
 
 At the *USER>* prompt, type:
 
-        zw ^iristest
+```console
+zw ^iristest
+```
 
 Note that you need to add the *caret* (^) symbol before the name.  You should see something like:
 
@@ -300,7 +314,4 @@ Note that you need to add the *caret* (^) symbol before the name.  You should se
 You'll be returned to the *USER>* prompt at the end of the listing.
 
 Once again, though displayed in a slightly different format, you'll see the structure and contents of this Global Document which, as we saw before, is a simple key/value pair structure with a numeric key and a value of *hello world*.
-
-
-
 
