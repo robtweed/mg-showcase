@@ -95,6 +95,7 @@ all of which are ready to run when you start the container:
     - [Using the mg-dbx-napi Interface with Bun.serve](./TUTORIAL-MGDBX-BUN.md)
     - [Using *glsdb* with Bun.serve](./TUTORIAL-GLSDB-BUN.md)
   - [Benchmarking QOper8](./QOPER8-BENCHMARKS.md)
+  - [Benchmarking QOper8 + mg-dbx-napi + glsdb](./GLSDB-BENCHMARKS.md)
 
 ... more to follow
 
