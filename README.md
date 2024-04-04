@@ -96,6 +96,8 @@ all of which are ready to run when you start the container:
     - [Using *glsdb* with Bun.serve](./TUTORIAL-GLSDB-BUN.md)
   - [Benchmarking QOper8](./QOPER8-BENCHMARKS.md)
   - [Benchmarking QOper8 + mg-dbx-napi + glsdb](./GLSDB-BENCHMARKS.md)
+- mg-web
+  - [Why mg-web? A New Paradigm for JavaScript Web Frameworks](./WHY-MGWEB.md)
 
 ... more to follow
 
