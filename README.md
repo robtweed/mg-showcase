@@ -10,7 +10,7 @@ Google Group for discussions, support, advice etc: [http://groups.google.co.uk/g
 
 ## Version
 
-This is version 2.4 of the *mg-showcase* repository and Containers, released on 28 March 2024.
+This is version 2.5 of the *mg-showcase* repository and Containers, released on 4 April 2024.
 
 ## Background
 
@@ -96,8 +96,9 @@ all of which are ready to run when you start the container:
     - [Using *glsdb* with Bun.serve](./TUTORIAL-GLSDB-BUN.md)
   - [Benchmarking QOper8](./QOPER8-BENCHMARKS.md)
   - [Benchmarking QOper8 + mg-dbx-napi + glsdb](./GLSDB-BENCHMARKS.md)
-- mg-web
-  - [Why mg-web? A New Paradigm for JavaScript Web Frameworks](./WHY-MGWEB.md)
+- mg_web
+  - [The Elephant in the JavaScript Web Framework Room](./WHY-MGWEB.md)
+  - [Introducing mg_web](./WHY-MGWEB.md)
 
 ... more to follow
 

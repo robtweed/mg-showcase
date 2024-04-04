@@ -1,4 +1,4 @@
-# Server-Side JavaScript Frameworks
+# The Elephant in the JavaScript Web Framework Room
 
 ## Background
 
@@ -37,7 +37,7 @@ To summarise our results, running on an M1 Mac Mini:
 
 We've seen, however, that these throughput figures 
 [drop drastically](./GLSDB-BENCHMARKS.md#typical-performance-of-nodejs--fastify-when-accessing-databases)
- as soon as the request handler(s) have to access any mainstream database, but accessing the YottaDB and IRIS databases via our *mg-dbx-napi* interface is very fast by comparison.  However, for the latter to work in the single-threaded JavaSdcript run-time environments, we need to add the queue/dispatch/Child Process architecture provided by our *QOper8* package.
+ as soon as the request handler(s) have to access any mainstream database, but accessing the YottaDB and IRIS databases via our *mg-dbx-napi* interface is very fast by comparison.  However, for the latter to work in the single-threaded JavaScript run-time environments, we need to add the queue/dispatch/Child Process architecture provided by our *QOper8* package.
 
 Here's what that architecture looks like in diagrammatic form:
 
@@ -63,8 +63,7 @@ The typical proxied architecture looks like this, using Fastify as an example:
 
 ![NGINX](images/mgweb-1/Slide4.png)
 
-You'll notice that NGINX is now also taking responsibility for serving up the static files, as task for which it is heavily optimised, and the Fastify server is for only specific routes that need to be handled dynamically
-.
+You'll notice that NGINX is now also taking responsibility for serving up the static files, a task for which it is heavily optimised, and the Fastify server is for only specific routes that need to be handled dynamically.
 
 ## Performance Implications
 
@@ -79,7 +78,7 @@ You'll find that your *mg-showcase* Container provides everything needed to see 
 
 ## Exploring NGINX in your Container
 
-### NGINX should be Ready to RUn
+### NGINX should be Ready to Run
 
 Your *mg-framework* Container already included a pre-installed, pre-configured copy of NGINX that was started automatically when you started your Container.
 
@@ -319,7 +318,7 @@ So this has to raise the question: does it make sense for server-side JavaScript
 
 And if not, is there potentially a better and more efficient way to design an externally-facing server-side JavaScript environment? 
 
-COuld we, instead, make use of an already exceptionally fast industry-standard Web Server such as NGINX to provide the HTTP server heart of the system, capable of being exposed to external traffic, and then add to it a means by which NGINX can dispatch directly to JavaScript handlers, thereby avoiding the unnecessary overhead of yet another HTTP server?
+Could we, instead, make use of an already exceptionally fast industry-standard Web Server such as NGINX to provide the HTTP server heart of the system, capable of being exposed to external traffic, and then add to it a means by which NGINX can dispatch directly to JavaScript handlers, thereby avoiding the unnecessary overhead of yet another HTTP server?
 
 The answer is yes, and it's something we call [*mg_web*](https://github.com/chrisemunt/mg_web).
 
