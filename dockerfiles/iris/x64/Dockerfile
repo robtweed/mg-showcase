@@ -46,7 +46,6 @@ RUN git clone https://github.com/chrisemunt/mg_web  \
  && cp /home/irisowner/mg_web/src/*.h /opt/mg_web \
  && cp /home/irisowner/mg_web/src/*.c /opt/mg_web \
  && cp /home/irisowner/mg_web/src/nginx/* /opt/mg_web \
- && cp /home/irisowner/mg_web/experimental/mg_web_node.mjs /home/irisowner \
  && cd /opt/mg_web \
  && dos2unix *
 
@@ -103,7 +102,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
   && export NVM_DIR="$HOME/.nvm"  >> .bashrc \
   && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  >> .bashrc \
   && nvm install 20 \
-  && npm install qoper8-fastify mg-bun-router glsdb mg-dbx-napi @fastify/static mgw-router json5 redis \
+  && npm install qoper8-fastify mg-bun-router glsdb mg-dbx-napi @fastify/static mgw-router mg_web_js json5 redis \
   && npm install autocannon -g \
   && cp -r /usr/irissys/dev/nodejs/* /home/irisowner/node_modules
 

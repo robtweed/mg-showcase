@@ -98,7 +98,6 @@ all of which are ready to run when you start the container:
   - [Benchmarking QOper8 + mg-dbx-napi + glsdb](./GLSDB-BENCHMARKS.md)
 - mg_web
   - [The Elephant in the JavaScript Web Framework Room](./WHY-MGWEB.md)
-  - [Introducing mg_web](./WHY-MGWEB.md)
 
 ... more to follow
 
