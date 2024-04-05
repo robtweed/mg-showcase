@@ -305,9 +305,9 @@ We've also included some of the key comparisons using Fastify, one of the fastes
   |                                                | Rate/sec   |
   |------------------------------------------------|------------|
   | NGINX Standalone (do nothing)                  | 246,000    |
-  | NGINX + mg_dbx (do nothing)                    |  64,000    |
-  | NGINX + mg_dbx + mg-dbx-napi + YottaDB         |  58,000    |
-  | NGINX + mg_dbx + mg-dbx-napi + glsdb + YottaDB |  49,000    |
+  | NGINX + mg_web (do nothing)                    |  64,000    |
+  | NGINX + mg_web + mg-dbx-napi + YottaDB         |  58,000    |
+  | NGINX + mg_web + mg-dbx-napi + glsdb + YottaDB |  49,000    |
   |  &nbsp;                                        |   &nbsp;   |
   | Fastify Standalone (do nothing)                |  50,000    |
   | NGINX Proxy + Fastify (do nothing)             |  21,000    |
