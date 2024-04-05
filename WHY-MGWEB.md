@@ -322,7 +322,7 @@ Could we, instead, make use of an already exceptionally fast industry-standard W
 
 The answer is yes, and it's something we call [*mg_web*](https://github.com/chrisemunt/mg_web).
 
-In the next document we'll tell you all about it!
+In the [next document we'll tell you all about it](./MGWEB.md)!
 
 
 

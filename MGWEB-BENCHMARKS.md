@@ -298,6 +298,26 @@ Clearly then you can decide which is more important to you:
 
 ## Summary
 
+Here's a summary of our tests, running NGINX + *mg_web* in Node.js on an M1 Mac Mini with 16Gb RAM.
+
+We've also included some of the key comparisons using Fastify, one of the fastest Web Frameworks for Node.js.
+
+  |                                                | Rate/sec   |
+  |------------------------------------------------|------------|
+  | NGINX Standalone (do nothing)                  | 246,000    |
+  | NGINX + mg_dbx (do nothing)                    |  64,000    |
+  | NGINX + mg_dbx + mg-dbx-napi + YottaDB         |  58,000    |
+  | NGINX + mg_dbx + mg-dbx-napi + glsdb + YottaDB |  49,000    |
+  |  &nbsp;                                        |   &nbsp;   |
+  | Fastify Standalone (do nothing)                |  50,000    |
+  | NGINX Proxy + Fastify (do nothing)             |  21,000    |
+  | Fastify Standalone + MongoDB *                 |   9,000    |
+
+
+> * Results from [MongoDB showdown](https://thenewstack.io/a-showdown-between-express-js-and-fastify-web-app-frameworks/)
+
+Our tests clearly show that *mg_dbx* used with NGINX is capable of significantly higher performance and throughput than Fastify, particularly when accessing data from a mainstream database such as MongoDB.
+
 Please try these tests out for yourself using one of the *mg-showcase* Containers on your own system.
 
 We're confident that the results you'll see will be orders of magnitude better than anything else you've seen when accessing a database via a JavaScript Web Framework.

@@ -380,6 +380,9 @@ We can now show diagrammatically what the complete *mg_web* stack can look like:
 ![mgweb 6](images/mgweb-1/Slide11.png)
 
 
-This concludes our overview of *mg_web*.  In the next document we'll run some benchmarks for comparison with the earlier ones using Fastify.
+This concludes our overview of *mg_web*.  
+
+In the [next document](./MGWEB-BENCHMARKS.md) 
+we'll run some benchmarks for comparison with the earlier ones using Fastify.
 
 
