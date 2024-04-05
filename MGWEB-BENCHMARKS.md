@@ -56,7 +56,7 @@ Req/Bytes counts sampled once per second.
 
 So NGINX on its own is an incredibly fast Web Server, giving us a performance of around 250,000 requests/sec.
 
-of course, this is processinging a not very useful "do-nothing" route.
+of course, this is processing a not very useful "do-nothing" route.
 
 
 ## NGINX + *mg_web*
@@ -142,12 +142,11 @@ So NGINX coupled with *mg_web* is delivering 3X the performance of an equivalent
 We're also now seeing 3X the performance of Fastify running without an NGINX proxy and handling requests in QOper8.  Here were our previous results for QOper8:
 
 
-```console
   |                 | Connections | Rate/sec   |
   |-----------------|-------------|------------|
   | Node.js/Fastify | 8           |  21,000    |
   | Bun.serve       | 32          |  49,000    |
-```
+
 
 ## NGINX + *mg_web* + *mg-dbx-napi* access to YottaDB
 
