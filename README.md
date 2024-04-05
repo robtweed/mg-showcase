@@ -10,7 +10,7 @@ Google Group for discussions, support, advice etc: [http://groups.google.co.uk/g
 
 ## Version
 
-This is version 2.5 of the *mg-showcase* repository and Containers, released on 4 April 2024.
+This is version 2.6 of the *mg-showcase* repository and Containers, released on 5 April 2024.
 
 ## Background
 
@@ -99,6 +99,7 @@ all of which are ready to run when you start the container:
 - mg_web
   - [The Elephant in the JavaScript Web Framework Room](./WHY-MGWEB.md)
   - [Introduction to mg_web](./MGWEB.md)
+  - [mg_web Benchmarks](./MGWEB-BENCHMARKS.md)
 
 ... more to follow
 

@@ -42,6 +42,33 @@ router.get('/mgweb/user/:userId', (Request, ctx) => {
 
 });
 
+router.get('/mgweb/userx/:userId', (Request, ctx) => {
+
+  // same as above but using the low-level mg-dbx-napi APIs
+  //  note the caching of the person class for max performance
+
+  let db = ctx.glsdb.dbx.db;
+  let person = ctx.person;
+  if (!person) {
+    person = new ctx.glsdb.dbx.mglobal(db, 'Person');
+    ctx.person = person;
+  }
+  let id = Request.params.userId;
+  let firstname = person.get('data', id, 'firstName');
+  let lastname = person.get('data', id, 'lastName');
+
+  return {
+    payload: {
+      key: id,
+      data: {
+        firstName: firstname,
+        lastName: lastname
+      }
+    }
+  };
+
+});
+
 
 // post route
 // if applcation.json content-type, body is parsed automatically as jSON
@@ -58,7 +85,8 @@ router.post('/mgweb/save', (Request, ctx) => {
 
   let id = personId.increment();
   person.$(id).document = {
-    name: Request.body.name,
+    firstName: Request.body.firstName,
+    lastName: Request.body.lastName,
   };
 
   return {
@@ -77,7 +105,8 @@ router.post('/mgweb/savep', (Request, ctx) => {
   let id = person.nextId._increment();
 
   person.data[id] = {
-    name: Request.body.name
+    firstName: Request.body.firstName,
+    lastName: Request.body.lastName,
   }
 
   return {
@@ -99,7 +128,8 @@ router.post('/mgweb/savep2', (Request, ctx) => {
   let id = person.nextId.valueOf();
 
   person.data[id] = {
-    name: Request.body.name
+    firstName: Request.body.firstName,
+    lastName: Request.body.lastName,
   }
 
   return {

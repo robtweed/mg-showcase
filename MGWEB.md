@@ -65,7 +65,7 @@ You'll be able to use our pre-configured *mg_showcase* Containers to quickly and
 
 ## *mg_web* in Action
 
-It's probably best to explain how *mg_web* diagrammatically.  The following explanation assumes the use of NGINX, but it works identically with Apache and IIS.
+It's probably best to explain how *mg_web* works diagrammatically.  The following explanation assumes the use of NGINX, but it works identically with Apache and IIS.
 
 ### *mg_web* + NGINX
 
@@ -112,7 +112,7 @@ There are two key pieces of configuration information that must be included in t
 
 Note: Apache and IIS require similar configuration information, but the specifics are somewhat different.  Consult the *mg_web* documentation.
 
-### *mg_web Configuration
+### *mg_web* Configuration
 
 The *mg_web* Configuration file tells *mg_web* how to handle any incoming requests that NGINX has forwarded to it.
 
