@@ -135,7 +135,7 @@ This stack will achieve significantly higher levels of performace and throughput
   - Postgres
   - MongoDB
 
-You'll be able to use our pre-configured *mg_showcase* Containers to quickly and easily prove this to yourself: we've included NGINX together with our complete *mg_web* stack for you and it's all ready to run!
+You'll be able to use our [pre-configured *mg_showcase* Containers](./INSTALL.md) to quickly and easily prove this to yourself: we've included NGINX together with our complete *mg_web* stack for you and it's all ready to run!
 
 
 ## *mg_web* in Action
@@ -148,7 +148,8 @@ Let's start with *mg_web* itself:
 
 ![mgweb 1](images/mgweb-1/Slide6.png)
 
-The means of integration of *mg_web* depends on the Web Server.  In the case of NGINX, it needs to be specified as an add-on module when NGINX is built.  If you're using any of our *mg-showcase* Containers, this has already been done for you when your built the Container using our Dockerfile.  Here's the relevant lines:
+The means of integration of *mg_web* depends on the Web Server.  In the case of NGINX, it needs to be specified as an add-on module when NGINX is built.  If you're using any of our 
+[*mg-showcase* Containers](./INSTALL.md), this has already been done for you when your built the Container using our Dockerfile.  Here's the relevant lines:
 
 ```console
 RUN cd /opt \
