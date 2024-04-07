@@ -1,5 +1,80 @@
 # Introduction to *mg_web*
 
+## The Problem with JavaScript Web Frameworks
+
+In the [previous document](./WHY-MGWEB.md), we looked at the fundamental problem with all JavaScript Web Frameworks or HTTP Servers.  In summary:
+
+- if used to handle external traffic, they should be put behind a reverse-proxy such as NGINX:
+  - this adds a new layer of networking for requests and responses to negotiate
+  - the HTTP request parsing/handling of the externally-facing reverse proxy is unnecessarily replicated by the JavaScript Web Framework/HTTP Server
+
+- when handling real-world tasks, they need to be integrated with a database:
+  - the reality is that the performance of most of the popular mainstream databases is, frankly, pretty dire by comparison with the performance of even the slowest JavaScript Web Framework
+  - the network-based interfaces used for most databases presents a signigicant bottleneck
+
+The net result is that the extremely high performance that the very fastest of JavaScript Web Frameworks achieve when handling "do nothing" operations is massively eroded and compromised when used in a real-world scenario.
+
+For example, [our analysis](https://github.com/robtweed/mg-showcase/blob/master/WHY-MGWEB.md#benchmark-comparisons) using Fastify running in Node.js gave the following results:
+
+  |                                                | Rate/sec   |
+  |------------------------------------------------|------------|
+  | Fastify Standalone (do nothing)                |  50,000    |
+  | NGINX Proxy + Fastify (do nothing)             |  21,000    |
+  | Fastify Standalone + MongoDB *                 |   9,000    |
+
+
+> * Results from [MongoDB showdown](https://thenewstack.io/a-showdown-between-express-js-and-fastify-web-app-frameworks/)  See also [our benchmarks for Fastify accessing Postgres and MongoDB](./GLSDB-BENCHMARKS.md#typical-performance-of-nodejs--fastify-when-accessing-databases)
+
+
+## An Alternative Architecture to Avoid These Problems
+
+Our *mg_web* technology is designed to address these issues.  It does so by leveraging the capabilities and benefits of the "big-three" industry-standard Web Servers via an extension that distaches requests directly to the JavaScript handlers that will process them.  Proxying and replication of HTTP processing is eliminated, resulting in a significant performance gain.
+
+Here's the architecture using NGINX as an example:
+
+![intro 1](images/mgweb-1/Slide10.png)
+
+
+### What About the Database Performance Issue?
+
+The *mg_web* architecture can be used with any mainstream database, but in doing so you'll not be able to avoid their performance-sapping bottlenecks.
+
+Our recommendation is to use instead one of the ultra-high-performance Global Storage Databases (eg YottaDB and IRIS). 
+
+These databases and our *mg-dbx-napi* JavaScript interface are discussed in detail in our 
+[mg-showcase](https://github.com/robtweed/mg-showcase).  In a nutshell: they are capable of 
+[near in-memory-level performance when handing key/value storage](./BASIC-BENCHMARKS.md), but can also handle 
+[any JSON data structures](./JSON-BENCHMARKS.md) and have 
+[full multi-model capabilities](https://github.com/robtweed/global_storage/blob/master/Universal_NoSQL.md).
+
+*mg_web* is designed to directly integrate with our [*mg-dbx-napi*](https://github.com/chrisemunt/mg-dbx-napi) interface, allowing you fully to leverage the performance of these uniquely pwerful databases.
+
+The resulting combination of *mg_web*, *mg-dbx-napi* and YottaDB or IRIS delivers a level of real-world performance far in excess of any other JavaScript Framework/database stack.  
+
+Using NGINX and YottaDB as an example, this complete stack can be visualised like this:
+
+![intro 2](images/mgweb-1/Slide11.png)
+
+
+What's the performance like?  Well, here's a summary of our [benchmarks](./MGWEB-BENCHMARKS.md):
+
+  |                                                | Rate/sec   |
+  |------------------------------------------------|------------|
+  | NGINX + mg_web (do nothing)                    |  64,000    |
+  | NGINX + mg_web + mg-dbx-napi + YottaDB         |  58,000    |
+
+*mg_web* therefore delivers better performance than even Fastify running standalone without a proxy.
+
+Additionally, when used with *mg-dbx-napi* and accessing the YottaDB database, there's only a small reduction in performance, and it's still faster than Fastify running standalone when only processing "do-nothing" requests!
+
+Our [mg-showcase](https://github.com/robtweed/mg-showcase) provides pre-built Docker Containers for you to try out and test this complete *mg_web* stack for yourself.
+
+If these levels of performance have got you interested in learning more, continue reading this document for a deeper dive into *mg_web*.
+
+----
+
+# *mg_web* In Detail
+
 ## Industry Standard Web Servers
 
 Almost all external-facing HTTP traffic in the world is handled by just three big-name industry-standard and real-world-hardened Web Servers:
