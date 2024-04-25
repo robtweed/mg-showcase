@@ -441,12 +441,13 @@ Let's first take a look at the very simple handler for the *GET /mgwm/helloworld
 
 In both cases the code is the same:
 
+```console
 helloworld(req) ;
  n res
  s res("hello")="world"
  QUIT $$response^%zmgweb(.res)
  ;
-
+```
 
 *mgweb-server* assumes you're always using JSON requests and responses (ie with a */application/json* Content Type), and provides automatic mapping between local arrays and a corresponding JSON structure.
 
