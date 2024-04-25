@@ -1,10 +1,10 @@
 # MGateway Ltd
-# 5 April 2024
+# 24 April 2024
 
-# Version 2.6
+# Version 2.7
 FROM debian:bookworm
 
-RUN echo "Building mg-showcase Container Version 2.6"
+RUN echo "Building mg-showcase Container Version 2.7"
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -80,7 +80,8 @@ RUN cd /opt/mgateway \
  && chmod +x nginx \
  && chmod +x install_nodem \
  && chmod +x g \
- && chmod +x gd
+ && chmod +x gd \
+ && chmod 777 mgweb.log
 
 RUN cd /opt \
   && wget https://nginx.org/download/nginx-1.25.4.tar.gz \
@@ -145,7 +146,6 @@ RUN git clone https://github.com/chrisemunt/mgsi /opt/mgateway/mgsi \
   && cp /opt/mgateway/mgsi/yottadb/* /opt/mgateway/m \
   && /opt/mgateway/ydb_run_temp ylink^%zmgsi \
   && cp /opt/mgateway/mgsi/unix/zmgsi.ci /usr/local/lib/yottadb/r138
-  #&& rm -r /opt/mgateway/mgsi
 
 RUN cp /opt/mgateway/mgsi/unix/zmgsi_ydb /usr/local/lib/yottadb/r138 \
   && cp /opt/mgateway/mgsi/unix/zmgsi_xinetd /etc/xinetd.d/zmgsi_xinetd \
@@ -156,12 +156,22 @@ RUN cp /opt/mgateway/mgsi/unix/zmgsi_ydb /usr/local/lib/yottadb/r138 \
   && echo "zmgsi_xinetd          7041/tcp                        # zmgsi" >> /etc/services \
   && rm -r /opt/mgateway/mgsi
 
+# Install and configure mgweb-server for M-based examples
+
+RUN echo "install mgweb-server y"
+
+RUN git clone https://github.com/robtweed/mgweb-server /opt/mgateway/mgweb-server \
+  && mv /opt/mgateway/mgweb-server/m/* /opt/mgateway/m \
+  && mv /opt/mgateway/_zmgwebExamples.m /opt/mgateway/m \
+  && /opt/mgateway/ydb_run_temp ylink^%zmgweb
+
 # Clean up
 
 RUN cd /opt/mgateway \
   && rm gde.txt \
   && rm ydb_run_temp \
   && rm -r /opt/nginx-1.25.4/ \
+  && rm -r /opt/mgateway/mgweb-server \
   && rm /opt/nginx-1.25.4.tar.gz
 
 RUN updatedb

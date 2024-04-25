@@ -14,8 +14,7 @@ However, you can also make use of our Containers as a run-time environment for y
 ## Starting/Running the Containers
 
 - [YottaDB Container](https://github.com/robtweed/mg-showcase/blob/master/INSTALL.md#running-the-container)
-- [IRIS Container for X64](https://github.com/robtweed/mg-showcase/blob/master/INSTALL.md#running-the-container-1)
-- [IRIS Container for ARM64](https://github.com/robtweed/mg-showcase/blob/master/INSTALL.md#running-the-container-2)
+- [IRIS Container](https://github.com/robtweed/mg-showcase/blob/master/INSTALL.md#running-the-container)
 
 
 ## Shelling into the Containers

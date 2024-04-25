@@ -33,6 +33,8 @@ else
 
 fi
 
+/opt/mgateway/ydb_run ylink^%zmgweb 2>/dev/null
+/opt/mgateway/ydb_run buildRoutes^%zmgwebExamples 2>/dev/null
 redis-server --daemonize yes
 ./nginx start
 

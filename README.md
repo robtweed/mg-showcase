@@ -1,4 +1,4 @@
-# mgw-showcase: Dockerised showcase for MGateway JavaScript Technologies
+# mgw-showcase: Dockerised showcase for MGateway's Web Platform Technologies
  
 Rob Tweed <rtweed@mgateway.com>  
 28 February 2024, MGateway Ltd [https://www.mgateway.com](https://www.mgateway.com)  
@@ -10,7 +10,7 @@ Google Group for discussions, support, advice etc: [http://groups.google.co.uk/g
 
 ## Version
 
-This is version 2.6 of the *mg-showcase* repository and Containers, released on 5 April 2024.
+This is version 2.7 of the *mg-showcase* repository and Containers, released on 25 April 2024.
 
 ## Background
 
@@ -23,18 +23,22 @@ MGateway Ltd have long been an independent pioneer in bringing Global Storage Da
 Our *mg-showcase* repository is designed to allow anyone interested in our JavaScript-based
 technology to quickly and easily try it out, explore it and begin to make use of it, allowing JavaScript developers to discover and try out for themselves these uniquely powerful database technologies.
 
+For existing users of Global Storage Databases, our *mg-showcase* repository also includes Web Platform technologies that demonstrate the use of these databases' native languages, known as ObjectScript or M.
+
 ## Repository Contents
 
-The repository includes three Docker installations that you can build and run: all you need is
+The repository includes two Docker installations that you can build and run: all you need is
 an Intel X64 machine or ARM64 machine (eg Apple M1 or M2, Raspberry Pi 4 or later) with Docker
 already installed.
 
-The three Docker installations include all our JavaScript technologies, and only differ in terms of the
-database that will be included during the build phase, specifically:
+The two Docker installations include all our key Web Platform technologies, and only differ in terms of the
+Global Storage Database that will be included during the build phase, specifically:
 
-- YottaDB (Container can be built on both Intel X64 and ARM64 host machines)
-- InterSystems IRIS (for building on Intel X64 host machines)
-- InterSystems IRIS (for building on ARM64 host machines)
+- [YottaDB](https://yottadb.com/)
+- [InterSystems IRIS](https://www.intersystems.com/products/intersystems-iris/)
+
+Both Containers can be built on Intel X64 or ARM64 host machines
+
 
 Each container also includes:
 
@@ -71,8 +75,15 @@ all of which are ready to run when you start the container:
   - qoper8-fastify: a Fastify Plug-in that integrates qoper8-cp, mg-dbx-napi and glsdb
   - mg-bun-router: a router for Bun.serve that also integrates qoper8-cp, mg-dbx-napi and glsdb
 
-  - mg_web: a JavaScript-based interface to YottaDB and IRIS, but integrated directly into NGINX
-  - mgw-router: a JavaScript router built on mg_web, offering a high-performance, JavaScript web framework that is built on NGINX - an industrial-strength Web Server rather than a native JavaScript web server (eg Express, Fastify etc)
+  - mg_web: an add-on interfacing module for NGINX, allowing connection to external servers
+  - mg_web_js: a JavaScript-based server for mg_web that provides an interface to YottaDB and IRIS
+  - mgw-router: a JavaScript router for mg_web_js that provides an Express-like router API
+
+  Our *mg_web*-based solutions create an extremely high-performance JavaScript web framework, rather than relying on a native JavaScript web server (eg Express, Fastify etc), *mg_web* allows the use of industry-standard Web Servers such as NGINX.
+
+  For existing users of the database tchnologies, each Container also includes pre-built demonstrations of *mg_web* directly connecting NGINX to the YottaDB or IRIS database, allowing handlers to be written in ObjectScript/M rather than JavaScript.  Your Container also includes another of our products, specifically designed for the M or ObjectScript developer:
+
+  -mgweb-server: an M/ObjectScript-based router for handling REST APIs
 
 - Client-side technologies:
 
@@ -96,10 +107,13 @@ all of which are ready to run when you start the container:
     - [Using *glsdb* with Bun.serve](./TUTORIAL-GLSDB-BUN.md)
   - [Benchmarking QOper8](./QOPER8-BENCHMARKS.md)
   - [Benchmarking QOper8 + mg-dbx-napi + glsdb](./GLSDB-BENCHMARKS.md)
-- mg_web
+- mg_web for JavaScript Developers
   - [The Elephant in the JavaScript Web Framework Room](./WHY-MGWEB.md)
   - [Introduction to mg_web](./MGWEB.md)
   - [mg_web Benchmarks](./MGWEB-BENCHMARKS.md)
+- mg_web for ObjectScript/M developers
+  - [Introduction to mg_web for ObjectScript and M Developers](./MGWEB-M.md)
+  - [Benefits of mg_web for ObjectScript and M Developers](./MGWEB-BENEFITS.md)
 
 ... more to follow
 

@@ -1,11 +1,11 @@
 # MGateway Ltd
-# 5 April 2024
+# 24 April 2024
 
-# Version 2.6
+# Version 2.7
 
 FROM containers.intersystems.com/intersystems/iris-community:2023.3
 
-RUN echo "Building mg-showcase Container Version 2.6"
+RUN echo "Building mg-showcase Container Version 2.7"
 
 USER root
 
@@ -67,6 +67,7 @@ RUN cd /home/irisowner \
   && chmod +x nginx \
   && chmod +x g \
   && chmod +x gd \
+  && chmod 777 mgweb.log \
   && dos2unix *
 
 RUN cd /opt \
@@ -130,6 +131,12 @@ RUN curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyri
 RUN cd /opt \
   && git clone https://github.com/chrisemunt/mgsi
 
+RUN echo "install mgweb-server y"
+
+RUN cd /opt \
+  && git clone https://github.com/robtweed/mgweb-server \
+  && mv /home/irisowner/zmgwebExamples.ro /opt/mgweb-server/isc
+
 # Change the IRIS system password to secret
 
 RUN sed -i 's/PasswordHash=/PasswordHash=2d23c9271a8c4cfbf12abb4553be2817d617a457ab8ccbfceba0fb832ef29c67263fd56f0b6c3bea6f14a675cb5daf921d559bcee0d60b5bb17385b5d0c749b7,8b17803718974c72d35b3d4236d418160145b42a8a2725f5c1c2553dc7df01ae54afd8a17fd5f06401bba850577d32cb807e5034f5bbead49be883604b06444e,10000,SHA512/g' /usr/irissys/iris.cpf
@@ -151,6 +158,9 @@ RUN iris start IRIS quietly && \
     "set prop(\"Enabled\")=1\n" \
     "do ##class(Security.Services).Modify(\"%Service_CallIn\",.prop)\n" \
     "do ##class(%SYSTEM.OBJ).Load(\"/opt/mgsi/isc/zmgsi_isc.ro\",\"ck\")\n" \
+    "do ##class(%SYSTEM.OBJ).Load(\"/opt/mgweb-server/isc/zmgweb.ro\",\"ck\")\n" \
+    "do ##class(%SYSTEM.OBJ).Load(\"/opt/mgweb-server/isc/zmgwebExamples.ro\",\"ck\")\n" \
+    "do buildRoutes^%zmgwebExamples\n" \
     "d start^%zmgsi(7042)\n" \
     "halt" \
   | iris session IRIS -U %SYS && \

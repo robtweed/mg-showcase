@@ -1,0 +1,17 @@
+[
+  {
+    "uri": "/mgwm/helloworld",
+    "method": "GET",
+    "handler": "helloworld^%zmgwebExamples"
+  },
+  {
+    "uri": "/mgwm/save",
+    "method": "POST",
+    "handler": "save^%zmgwebExamples"
+  },
+  {
+    "uri": "/mgwm/user/:userId",
+    "method": "GET",
+    "handler": "getUser^%zmgwebExamples"
+  }
+]

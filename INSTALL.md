@@ -84,19 +84,16 @@ The YottaDB version is unrestricted:
 
 The version of IRIS used within this repository's Containers is the InterSystems IRIS Community Edition.  This is licensed for up to 8 connections/user processes, and will expire a year after the specific version was originally released (7 November 2024 for version 2023.3).
 
-## Dockerfile Platform Limitations
+## Dockerfile Platform Compatibility
 
-The Dockerfile for YottaDB is compatible with both Intel/AMD X64 and ARM64 systems.
-
-Separate Dockerfiles are included in the repository for IRIS, one for Intel/AMD X64 systems and one for ARM64 systems.
+The Dockerfiles for both YottaDB and IRIS are compatible with both Intel/AMD X64 and ARM64 systems.
 
 ----
 
 # Installing and Starting the Containers
 
 - [YottaDB](#the-yottadb-container)
-- [IRIS for Intel/AMD X64](#the-iris-container-for-x64)
-- [IRIS for ARM64](#the-iris-container-for-arm64)
+- [IRIS](#the-iris-container)
 
 - [Next Steps](#next-steps)
 
@@ -171,7 +168,7 @@ When you map a host volume as shown above when starting the Container, YottaDB w
 ----
 
 
-# The IRIS Container for X64
+# The IRIS Container
 
 ## Building the Container
 
@@ -186,7 +183,7 @@ cd ~/mg-showcase
 To build the Container:
 
 ```console
-docker build -t mg-showcase -f dockerfiles/iris/x64/Dockerfile .
+docker build -t mg-showcase -f dockerfiles/iris/Dockerfile .
 ```
 
 Feel free to change the container name to something other than *mg-showcase*.  However, our examples and documentation will assume you've used this name.
@@ -196,7 +193,7 @@ Note 1: you'll experience a delay towards the end of the build whilst some IRIS 
 Note 2: if you're upgrading the Container to a later release version, it's a good idea to disable the Docker build cache and force a complete rebuild, eg:
 
 ```console
-docker build --no-cache -t mg-showcase -f dockerfiles/iris/x64/Dockerfile .
+docker build --no-cache -t mg-showcase -f dockerfiles/iris/Dockerfile .
 ```
 
 ## Running the Container
@@ -219,80 +216,6 @@ docker run -it --name mg-showcase -it --rm -p 1972:1972 -p 52773:52773 -p 51773:
 
 - ports 1972, 52773 and 51773 are for use with various IRIS-specific functionality
 - port 7042 is for optional networked access to the database using our *mgsi* interface
-
-- replace the mapped host directory (*~/iris-vol*) with any other folder you want to use
-- replace *mg-showcase* appropriately if you built it with a different name
-
-- you may see the following warning when starting up the container:
-
-        # WARNING Memory overcommit must be enabled! Without it, a background save or 
-        replication may fail under low memory condition. Being disabled, it can also 
-        cause failures without low memory condition, see 
-        https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 
-        'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the 
-        command 'sysctl vm.overcommit_memory=1' for this to take effect.    
-
-  This relates to the Redis installation.  As we have only included Redis for the purposes of
-performance comparisons, it can be safely ignored.  Note that the suggested fix needs to be applied to
-the host system and not the Docker Container.
-
-### Data Persistence
-
-By default, data stored in the IRIS database will not persist between restarts.
-
-To add persistence, you should follow the 
-[official instructions provided by InterSystems](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK#ADOCK_iris_durable_running).
-
-----
-
-# The IRIS Container for ARM64
-
-## Building the Container
-
-Before building the containers, first ensure that you are in the root directory of the repository.
-
-For example, if you cloned the *mg-showcase* repository to your root folder:
-
-```console
-cd ~/mg-showcase
-```
-
-To build the Container:
-
-```console
-docker build -t mg-showcase -f dockerfiles/iris/arm64/Dockerfile .
-```
-
-Feel free to change the container name to something other than *mg-showcase*.  However, our examples and documentation will assume you've used this name.
-
-Note 1: you'll experience a delay towards the end of the build whilst some IRIS code is invoked to customise the container and it will appear to sit doing nothing for a while.  This is perfectly normal behaviour: be patient and let it finish.
-
-Note 2: if you're upgrading the Container to a later release version, it's a good idea to disable the Docker build cache and force a complete rebuild, eg:
-
-```console
-docker build --no-cache -t mg-showcase -f dockerfiles/iris/arm64/Dockerfile .
-```
-
-## Running the Container
-
-To start the Container:
-
-```console
-docker run -it --name mg-showcase -it --rm -p 1972:1972 -p 52773:52773 -p 51773:51773 -p 7042:7042 -p 8080:8080 -p 3000:3000 -v ~/iris-vol:/home/irisowner/mapped mg-showcase --check-caps false
-```
-
-### Notes
-
-- replace the *-it* parameter with *-d* to run the container as a background daemon process
-- replace the --name value with any other name you wish
-- use any other external listener port(s) by changing the first value of the *-p* arguments, eg:
-
-        -p 8082:8080
-
-  The internal web server listener ports should always be 8080 and 3000
-
-- ports 1972, 52773 and 51773 are for optional use with various IRIS-specific functionality
-- port 7042 is foroptional  networked access to the database using our *mgsi* interface
 
 - replace the mapped host directory (*~/iris-vol*) with any other folder you want to use
 - replace *mg-showcase* appropriately if you built it with a different name
