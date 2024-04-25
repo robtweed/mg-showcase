@@ -4,7 +4,7 @@
 
 [*mg_web*](https://github.com/chrisemunt/mg_web) provides a high-performance minimalistic interface between three popular web servers ( Microsoft IIS, Apache and Nginx ) and a choice of either Global Storage Database Servers (eg YottaDB and InterSystems IRIS ) or JavaScript.
 
-In this document, we're going to focus on the former use-case, where *mg_web* uses YottaDB or IRIS as its connected server.  If you're more interested in its use with JavaScript, this is [documented elsewhere](./MGWEB.m).
+In this document, we're going to focus on the former use-case, where *mg_web* uses YottaDB or IRIS as its connected server.  If you're more interested in its use with JavaScript, this is [documented elsewhere](./MGWEB.md).
 
 When connected directly to YottaDB or IRIS, it allows the back-end handling to be written in either M code (if you're using YottaDB) or ObjectScript (if you're using IRIS).  
 
