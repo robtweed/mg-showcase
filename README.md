@@ -10,7 +10,7 @@ Google Group for discussions, support, advice etc: [http://groups.google.co.uk/g
 
 ## Version
 
-This is version 2.7 of the *mg-showcase* repository and Containers, released on 25 April 2024.
+This is version 2.8 of the *mg-showcase* repository and Containers, released on 25 April 2024.
 
 ## Background
 

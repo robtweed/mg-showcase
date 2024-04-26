@@ -1,11 +1,11 @@
 # MGateway Ltd
-# 24 April 2024
+# 25 April 2024
 
-# Version 2.7
+# Version 2.8
 
 FROM containers.intersystems.com/intersystems/iris-community:2023.3
 
-RUN echo "Building mg-showcase Container Version 2.7"
+RUN echo "Building mg-showcase Container Version 2.8"
 
 USER root
 
