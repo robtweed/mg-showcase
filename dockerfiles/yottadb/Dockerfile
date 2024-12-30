@@ -1,10 +1,10 @@
 # MGateway Ltd
-# 16 December 2024
+# 20 December 2024
 
-# Version 2.9
+# Version 2.10
 FROM debian:bookworm
 
-RUN echo "Building mg-showcase Container Version 2.9"
+RUN echo "Building mg-showcase Container Version 2.10"
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -121,9 +121,9 @@ RUN mkdir /tmp/tmp \
   && chmod +x ydbinstall.sh \
   && ./ydbinstall.sh --utf8 default --verbose --force-install \
   && export ydb_gbldir=/opt/yottadb/yottadb.gld \
-  && /usr/local/lib/yottadb/r200/mumps -run ^GDE < /opt/mgateway/gde.txt \
-  && /usr/local/lib/yottadb/r200/mupip create \
-  && /usr/local/lib/yottadb/r200/mupip extend -blocks=48000 DEFAULT
+  && /usr/local/lib/yottadb/r202/mumps -run ^GDE < /opt/mgateway/gde.txt \
+  && /usr/local/lib/yottadb/r202/mupip create \
+  && /usr/local/lib/yottadb/r202/mupip extend -blocks=48000 DEFAULT
 
 RUN ./install_nodem \
   && cp /opt/mgateway/node_modules/nodem/src/v4wNode.m /opt/mgateway/m
@@ -144,14 +144,14 @@ RUN curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyri
 RUN git clone https://github.com/chrisemunt/mgsi /opt/mgateway/mgsi \
   && cp /opt/mgateway/mgsi/yottadb/* /opt/mgateway/m \
   && /opt/mgateway/ydb_run_temp ylink^%zmgsi \
-  && cp /opt/mgateway/mgsi/unix/zmgsi.ci /usr/local/lib/yottadb/r200
+  && cp /opt/mgateway/mgsi/unix/zmgsi.ci /usr/local/lib/yottadb/r202
 
-RUN cp /opt/mgateway/mgsi/unix/zmgsi_ydb /usr/local/lib/yottadb/r200 \
+RUN cp /opt/mgateway/mgsi/unix/zmgsi_ydb /usr/local/lib/yottadb/r202 \
   && cp /opt/mgateway/mgsi/unix/zmgsi_xinetd /etc/xinetd.d/zmgsi_xinetd \
-  && cp /opt/mgateway/mgsi/unix/zmgsi.ci /usr/local/lib/yottadb/r200 \
-  && sed -i 's/130/200/g' /etc/xinetd.d/zmgsi_xinetd \
-  && sed -i 's/130/200/g' /usr/local/lib/yottadb/r200/zmgsi_ydb \
-  && sed -i 's/1.30/2.00/g' /usr/local/lib/yottadb/r200/zmgsi_ydb \
+  && cp /opt/mgateway/mgsi/unix/zmgsi.ci /usr/local/lib/yottadb/r202 \
+  && sed -i 's/130/202/g' /etc/xinetd.d/zmgsi_xinetd \
+  && sed -i 's/130/202/g' /usr/local/lib/yottadb/r202/zmgsi_ydb \
+  && sed -i 's/1.30/2.02/g' /usr/local/lib/yottadb/r202/zmgsi_ydb \
   && echo "zmgsi_xinetd          7041/tcp                        # zmgsi" >> /etc/services \
   && rm -r /opt/mgateway/mgsi
 

@@ -1,7 +1,7 @@
 process.env.ydb_gbldir = '/opt/yottadb/yottadb.gld';
 process.env.ydb_dir = '/opt/yottadb';
-process.env.ydb_routines = '/opt/mgateway/m /usr/local/lib/yottadb/r138/libyottadbutil.so';
-process.env.ydb_dist = '/usr/local/lib/yottadb/r138';
+process.env.ydb_routines = '/opt/mgateway/m /usr/local/lib/yottadb/r202/libyottadbutil.so';
+process.env.ydb_dist = '/usr/local/lib/yottadb/r202';
 process.env.GTMCI = '/opt/mgateway/node_modules/nodem/resources/nodem.ci';
 
 const ydb = require('nodem').Ydb()

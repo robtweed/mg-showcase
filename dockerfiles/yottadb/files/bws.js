@@ -50,12 +50,12 @@ let router = new Router({
   mgdbx: {
     open: {
       type: "YottaDB",
-      path: "/usr/local/lib/yottadb/r138",
+      path: "/usr/local/lib/yottadb/r202",
       env_vars: {
         ydb_dir: '/opt/yottadb',
         ydb_gbldir: '/opt/yottadb/yottadb.gld',
-        ydb_routines: '/opt/mgateway/m /usr/local/lib/yottadb/r138/libyottadbutil.so',
-        ydb_ci: '/usr/local/lib/yottadb/r138/zmgsi.ci'
+        ydb_routines: '/opt/mgateway/m /usr/local/lib/yottadb/r202/libyottadbutil.so',
+        ydb_ci: '/usr/local/lib/yottadb/r202/zmgsi.ci'
       }
     }
   }
