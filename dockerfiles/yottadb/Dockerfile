@@ -1,10 +1,10 @@
 # MGateway Ltd
-# 25 April 2024
+# 16 December 2024
 
-# Version 2.8
+# Version 2.9
 FROM debian:bookworm
 
-RUN echo "Building mg-showcase Container Version 2.8"
+RUN echo "Building mg-showcase Container Version 2.9"
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -84,9 +84,9 @@ RUN cd /opt/mgateway \
  && chmod 777 mgweb.log
 
 RUN cd /opt \
-  && wget https://nginx.org/download/nginx-1.25.4.tar.gz \
-  && tar zxf nginx-1.25.4.tar.gz \
-  && cd nginx-1.25.4 \
+  && wget https://nginx.org/download/nginx-1.27.1.tar.gz \
+  && tar zxf nginx-1.27.1.tar.gz \
+  && cd nginx-1.27.1 \
   && CFLAGS=-Wno-error ./configure --prefix=/var/www/html --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --with-pcre --lock-path=/var/lock/nginx.lock --pid-path=/var/run/nginx.pid --with-http_ssl_module --with-http_image_filter_module=dynamic --modules-path=/etc/nginx/modules --with-http_v2_module --with-stream=dynamic --with-http_addition_module --with-http_mp4_module --with-threads --add-module=/opt/mg_web \
   && make \
   && make install
@@ -97,12 +97,11 @@ RUN mv /opt/mgateway/nginx.conf /etc/nginx
 
 RUN echo "Installing NVM plus latest Node.js"
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash \
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash \
   && echo 'export NVM_DIR="$HOME/.nvm"' >> .bashrc \
   && echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm' >> .bashrc \
   && export NVM_DIR="$HOME/.nvm" \
-  && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
-  && nvm install 20 \
+  && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \  && nvm install 22 \
   && npm install qoper8-fastify mg-bun-router glsdb mg-dbx-napi @fastify/static mgw-router mg_web_js json5 redis \
   && npm install autocannon -g
 
@@ -117,14 +116,14 @@ RUN curl -fsSL https://bun.sh/install | bash \
 RUN echo "Installing YottaDB..."
 
 RUN mkdir /tmp/tmp \
-  && wget -P /tmp/tmp https://gitlab.com/YottaDB/DB/YDB/raw/master/sr_unix/ydbinstall.sh \
+  && wget -P /tmp/tmp https://download.yottadb.com/ydbinstall.sh \
   && cd /tmp/tmp \
   && chmod +x ydbinstall.sh \
-  && ./ydbinstall.sh --utf8 default --verbose --force-install r1.38 \
+  && ./ydbinstall.sh --utf8 default --verbose --force-install \
   && export ydb_gbldir=/opt/yottadb/yottadb.gld \
-  && /usr/local/lib/yottadb/r138/mumps -run ^GDE < /opt/mgateway/gde.txt \
-  && /usr/local/lib/yottadb/r138/mupip create \
-  && /usr/local/lib/yottadb/r138/mupip extend -blocks=48000 DEFAULT
+  && /usr/local/lib/yottadb/r200/mumps -run ^GDE < /opt/mgateway/gde.txt \
+  && /usr/local/lib/yottadb/r200/mupip create \
+  && /usr/local/lib/yottadb/r200/mupip extend -blocks=48000 DEFAULT
 
 RUN ./install_nodem \
   && cp /opt/mgateway/node_modules/nodem/src/v4wNode.m /opt/mgateway/m
@@ -145,14 +144,14 @@ RUN curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyri
 RUN git clone https://github.com/chrisemunt/mgsi /opt/mgateway/mgsi \
   && cp /opt/mgateway/mgsi/yottadb/* /opt/mgateway/m \
   && /opt/mgateway/ydb_run_temp ylink^%zmgsi \
-  && cp /opt/mgateway/mgsi/unix/zmgsi.ci /usr/local/lib/yottadb/r138
+  && cp /opt/mgateway/mgsi/unix/zmgsi.ci /usr/local/lib/yottadb/r200
 
-RUN cp /opt/mgateway/mgsi/unix/zmgsi_ydb /usr/local/lib/yottadb/r138 \
+RUN cp /opt/mgateway/mgsi/unix/zmgsi_ydb /usr/local/lib/yottadb/r200 \
   && cp /opt/mgateway/mgsi/unix/zmgsi_xinetd /etc/xinetd.d/zmgsi_xinetd \
-  && cp /opt/mgateway/mgsi/unix/zmgsi.ci /usr/local/lib/yottadb/r138 \
-  && sed -i 's/130/138/g' /etc/xinetd.d/zmgsi_xinetd \
-  && sed -i 's/130/138/g' /usr/local/lib/yottadb/r138/zmgsi_ydb \
-  && sed -i 's/1.30/1.38/g' /usr/local/lib/yottadb/r138/zmgsi_ydb \
+  && cp /opt/mgateway/mgsi/unix/zmgsi.ci /usr/local/lib/yottadb/r200 \
+  && sed -i 's/130/200/g' /etc/xinetd.d/zmgsi_xinetd \
+  && sed -i 's/130/200/g' /usr/local/lib/yottadb/r200/zmgsi_ydb \
+  && sed -i 's/1.30/2.00/g' /usr/local/lib/yottadb/r200/zmgsi_ydb \
   && echo "zmgsi_xinetd          7041/tcp                        # zmgsi" >> /etc/services \
   && rm -r /opt/mgateway/mgsi
 
@@ -170,9 +169,9 @@ RUN git clone https://github.com/robtweed/mgweb-server /opt/mgateway/mgweb-serve
 RUN cd /opt/mgateway \
   && rm gde.txt \
   && rm ydb_run_temp \
-  && rm -r /opt/nginx-1.25.4/ \
+  && rm -r /opt/nginx-1.27.1/ \
   && rm -r /opt/mgateway/mgweb-server \
-  && rm /opt/nginx-1.25.4.tar.gz
+  && rm /opt/nginx-1.27.1.tar.gz
 
 RUN updatedb
 
