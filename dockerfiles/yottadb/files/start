@@ -10,6 +10,12 @@ if [ -d "/opt/mgateway/mapped" ]; then
 
   fi
 
+  # run custom startup script in mapped directory if it exists
+  if [ -f "/opt/mgateway/mapped/start.sh" ]; then
+    source /opt/mgateway/mapped/start.sh
+  fi
+
+
   # set symbolic links to use ydb_data directory for YottaDB storage
 
   rm /opt/yottadb/mumps.dat
